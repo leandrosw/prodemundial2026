@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prode Mundial 2026 | 7ma Edición</title>
+<meta name="description" content="El prode del Mundial USA-México-Canadá 2026. Pronosticá los 72 partidos de la fase de grupos + 11 extras y jugate el campeonato con tus amigos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #050810;
+    color: #e5e7eb;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    background: linear-gradient(90deg, #0a1428 0%, #1e3a8a 50%, #0a1428 100%);
+    color: #93c5fd;
+    text-align: center;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #1e3a8a;
+  }
+
+  /* ===== HEADER / NAV ===== */
+  .header {
+    position: sticky;
+    top: 0;
+    background: rgba(5, 8, 16, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1a2a44;
+    z-index: 1000;
+    padding: 16px 0;
+  }
+  .nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .logo span { color: #60a5fa; }
+
+  .nav-menu {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    list-style: none;
+  }
+  .nav-menu a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  .nav-menu a:hover { color: #fff; background: #0f172a; }
+  .nav-menu a.cta {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 22px;
+    margin-left: 8px;
+  }
+  .nav-menu a.cta:hover { background: #3b82f6; transform: translateY(-1px); }
+
+  .menu-toggle {
+    display: none;
+    background: none; border: none;
+    color: #fff; font-size: 22px;
+    cursor: pointer;
+    width: 32px; height: 32px;
+  }
+  .menu-toggle::before { content: '☰'; line-height: 1; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: calc(100vh - 80px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 80px 24px 60px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(37, 99, 235, 0.25), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 20% 80%, rgba(30, 64, 175, 0.2), transparent 70%),
+      linear-gradient(180deg, #050810 0%, #0a1024 100%);
+    z-index: -2;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: -1;
+  }
+
+  .hero-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .hero-text .play-tag {
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+  }
+
+  .hero-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 9vw, 120px);
+    line-height: 0.9;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+  .hero-text h1 .accent {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+  .hero-text .edition {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #60a5fa;
+    letter-spacing: 4px;
+    margin-bottom: 28px;
+  }
+  .hero-text .subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    margin-bottom: 36px;
+    max-width: 540px;
+  }
+  .hero-text .subtitle strong { color: #fff; font-weight: 600; }
+
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: #fff;
+    font-weight: 800;
+    font-size: 17px;
+    padding: 18px 44px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
+  }
+  .btn-whatsapp {
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3);
+  }
+  .btn-whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.45);
+  }
+  .btn-whatsapp .wa-icon {
+    width: 20px; height: 20px;
+    display: inline-block;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  /* Countdown box */
+  .countdown-box {
+    background: linear-gradient(135deg, #0a1428 0%, #0f1d3d 100%);
+    border: 1px solid #1e3a8a;
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .countdown-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  }
+  .countdown-box h3 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .countdown-item {
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid #1e3a8a;
+    border-radius: 10px;
+    padding: 16px 8px;
+  }
+  .countdown-item .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: #60a5fa;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .countdown-item .unit {
+    font-size: 10px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .countdown-host {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #1e3a8a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .countdown-host .flags { font-size: 18px; letter-spacing: 4px; }
+
+  /* Aviso secciones bloqueadas */
+  .locked-sections-notice {
+    margin-top: 16px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: #fbbf24;
+    font-size: 13px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .locked-sections-notice strong { color: #fde68a; }
+  .locked-sections-notice .lock-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    padding: 100px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .section-header { text-align: center; margin-bottom: 60px; }
+  .section-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .section-header p {
+    color: #94a3b8;
+    font-size: 17px;
+    max-width: 640px;
+    margin: 20px auto 0;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  /* ===== GANADORES (HALL OF FAME) ===== */
+  .winners-section {
+    background: linear-gradient(180deg, #050810 0%, #0a1024 100%);
+    border-top: 1px solid #1a2a44;
+    border-bottom: 1px solid #1a2a44;
+  }
+  .winners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .winner-card {
+    background: linear-gradient(180deg, #0a1428 0%, #050a18 100%);
+    border: 1px solid #1a2a44;
+    border-radius: 4px;
+    padding: 36px 28px 32px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .winner-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #1e3a8a, transparent);
+  }
+  .winner-card:hover {
+    transform: translateY(-6px);
+    border-color: #2563eb;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+  }
+  .winner-card:hover::before {
+    background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+  }
+  .winner-card .year {
+    font-family: 'Bebas Neue', sans-serif;
+    color: #fff;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .winner-card .year-label {
+    font-family: 'Oswald', sans-serif;
+    color: #60a5fa;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .winner-card .divider {
+    width: 32px;
+    height: 1px;
+    background: #1e3a8a;
+    margin: 0 auto 20px;
+  }
+  .winner-card .name {
+    color: #e5e7eb;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+  }
+
+  /* ===== SISTEMA DE PUNTAJE ===== */
+  .scoring-section { background: #050810; }
+  .scoring-intro {
+    background: linear-gradient(135deg, #0a1428 0%, #0f1d3d 100%);
+    border: 1px solid #1e3a8a;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.7;
+    text-align: center;
+  }
+  .scoring-intro strong { color: #60a5fa; }
+
+  .scoring-tier { margin-bottom: 32px; }
+  .tier-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 4px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tier-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #fff;
+    letter-spacing: 1.5px;
+  }
+  .tier-header .tier-badge {
+    background: #1e3a8a;
+    color: #93c5fd;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tier-header .tier-badge.plus { background: #2563eb; color: #fff; }
+  .tier-header .tier-badge.base { background: #1a2a44; color: #94a3b8; }
+
+  .scoring-list {
+    background: #0a1024;
+    border: 1px solid #1a2a44;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .scoring-list.plus { border-color: #2563eb; }
+  .scoring-list .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid #1a2a44;
+    gap: 16px;
+  }
+  .scoring-list .row:last-child { border-bottom: none; }
+  .scoring-list .row .label {
+    color: #e5e7eb;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .scoring-list .row .points {
+    background: #1e3a8a;
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    min-width: 70px;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .scoring-list.plus .row .points { background: #2563eb; }
+  .scoring-list.base .row .points { background: #334155; }
+
+  .note {
+    color: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    padding: 12px 24px 0;
+  }
+  .note strong { color: #60a5fa; font-style: normal; }
+
+  /* ===== PREMIOS ===== */
+  .prizes-section {
+    background: linear-gradient(180deg, #050810 0%, #0a1024 100%);
+    border-top: 1px solid #1a2a44;
+    border-bottom: 1px solid #1a2a44;
+  }
+  .prizes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 50px;
+  }
+  .prize-card {
+    background: #0a1024;
+    border: 1px solid #1a2a44;
+    border-radius: 16px;
+    padding: 40px 28px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .prize-card.gold {
+    background: linear-gradient(180deg, #0a1428 0%, #0a1024 100%);
+    border: 2px solid #3b82f6;
+    transform: scale(1.05);
+  }
+  .prize-card.gold:hover { transform: scale(1.05) translateY(-4px); }
+  .prize-card:hover { transform: translateY(-4px); border-color: #3b82f6; }
+  .prize-card .medal { font-size: 60px; margin-bottom: 12px; }
+  .prize-card .position {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .prize-card .reward {
+    color: #60a5fa;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .prize-card.gold .reward { color: #fff; font-size: 28px; }
+
+  .tiebreaker-box {
+    background: #0a1024;
+    border: 1px solid #1a2a44;
+    border-radius: 14px;
+    padding: 28px 32px;
+  }
+  .tiebreaker-box h4 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .tiebreaker-box p {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .tie-examples {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .tie-example {
+    background: #050810;
+    border: 1px solid #1a2a44;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 13px;
+  }
+  .tie-example .tie-title {
+    color: #60a5fa;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tie-example ul { list-style: none; }
+  .tie-example li { color: #cbd5e1; padding: 3px 0; }
+
+  /* ===== REGLAS ===== */
+  .rules-section { background: #050810; }
+  .rules-content {
+    background: #0a1024;
+    border: 1px solid #1a2a44;
+    border-radius: 14px;
+    padding: 36px 40px;
+  }
+  .rules-content ol {
+    list-style: none;
+    counter-reset: rule;
+  }
+  .rules-content ol li {
+    counter-increment: rule;
+    padding: 14px 0 14px 48px;
+    position: relative;
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.7;
+    border-bottom: 1px solid #1a2a44;
+  }
+  .rules-content ol li:last-child { border-bottom: none; }
+  .rules-content ol li::before {
+    content: counter(rule);
+    position: absolute;
+    left: 0; top: 14px;
+    width: 32px; height: 32px;
+    background: #1e3a8a;
+    color: #93c5fd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .rules-content li strong { color: #fff; }
+  .rules-content li a { color: #60a5fa; text-decoration: none; }
+  .rules-content li a:hover { text-decoration: underline; }
+
+  /* ===== FLOATING WHATSAPP BUTTON ===== */
+  .float-wa {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #25d366;
+    color: #fff;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    z-index: 999;
+    transition: all 0.3s ease;
+  }
+  .float-wa:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(37, 211, 102, 0.6); }
+  .float-wa .wa-icon-big {
+    width: 32px; height: 32px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: #020408;
+    border-top: 1px solid #1a2a44;
+    padding: 40px 24px;
+    text-align: center;
+    color: #475569;
+    font-size: 14px;
+  }
+  .footer a { color: #94a3b8; text-decoration: none; }
+  .footer a:hover { color: #60a5fa; }
+  .footer .footer-links { margin-bottom: 16px; display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 900px) {
+    .logo { font-size: 22px; }
+    .hero-content { grid-template-columns: 1fr; gap: 30px; }
+    .winners-grid { grid-template-columns: repeat(2, 1fr); }
+    .prizes-grid { grid-template-columns: 1fr; gap: 16px; }
+    .prize-card.gold { transform: none; }
+    .prize-card.gold:hover { transform: translateY(-4px); }
+    .tie-examples { grid-template-columns: 1fr; }
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #050810;
+      border-bottom: 1px solid #1a2a44;
+      flex-direction: column;
+      padding: 16px;
+      gap: 4px;
+    }
+    .nav-menu.open { display: flex; }
+    .nav-menu a { padding: 12px 16px; }
+    .nav-menu a.cta { margin-left: 0; margin-top: 8px; text-align: center; }
+    .menu-toggle { display: block; }
+    .section { padding: 60px 20px; }
+    .rules-content { padding: 24px 20px; }
+    .rules-content ol li { padding-left: 44px; font-size: 14px; }
+    .float-wa { width: 54px; height: 54px; bottom: 16px; right: 16px; }
+    .float-wa .wa-icon-big { width: 28px; height: 28px; }
+  }
+  @media (max-width: 560px) {
+    .winners-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+    .winner-card .year { font-size: 54px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Mundial 2026</div>
+
+<header class="header">
+  <nav class="nav">
+    <a href="#home" class="logo">PRODE MUNDIAL <span>2026</span></a>
+    <button class="menu-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')" aria-label="Menú"></button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#home">Inicio</a></li>
+      <li><a href="#reglas">Reglas</a></li>
+      <li><a href="#boletas">Boletas publicadas</a></li>
+      <li><a href="#mi-boleta">Mi boleta</a></li>
+      <li><a href="#tabla">Tabla de posiciones</a></li>
+      <li><a href="#" class="cta" id="playNowNav">Jugá ahora</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-text">
+      <span class="play-tag">Jugá ya!</span>
+      <h1>Prode Mundial <span class="accent">2026</span></h1>
+      <div class="edition">7ma edición</div>
+      <p class="subtitle">
+        <strong>72 partidos</strong> de fase de grupos + <strong>11 extras</strong>. Una boleta. La gloria eterna.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary" id="playNowMain">Jugá ya</a>
+        <a href="https://chat.whatsapp.com/Ht4FYplXFMH30dsixar8Lv" target="_blank" rel="noopener" class="btn-whatsapp">
+          <span class="wa-icon"></span>
+          Sumate al grupo de Whatsapp
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="countdown-box">
+        <h3>Arranca el Mundial en:</h3>
+        <div class="countdown-grid" id="countdown">
+          <div class="countdown-item"><div class="num" id="cd-days">--</div><div class="unit">Días</div></div>
+          <div class="countdown-item"><div class="num" id="cd-hours">--</div><div class="unit">Horas</div></div>
+          <div class="countdown-item"><div class="num" id="cd-mins">--</div><div class="unit">Min</div></div>
+          <div class="countdown-item"><div class="num" id="cd-secs">--</div><div class="unit">Seg</div></div>
+        </div>
+        <div class="countdown-host">
+          <span>11 Junio 2026 · México vs Sudáfrica</span>
+          <span class="flags">🇺🇸 🇲🇽 🇨🇦</span>
+        </div>
+      </div>
+
+      <div class="locked-sections-notice">
+        <span class="lock-icon">🔒</span>
+        <div>
+          Las secciones <strong>"Boletas publicadas"</strong>, <strong>"Mi boleta"</strong> y <strong>"Tabla de posiciones"</strong> serán habilitadas una vez cerrada la inscripción, dos días antes del inicio del mundial.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GANADORES (HALL OF FAME) -->
+<section class="winners-section">
+  <div class="section">
+    <div class="section-header">
+      <h2>Ganadores históricos</h2>
+      <p>Los que saben cuánto pesa</p>
+    </div>
+    <div class="winners-grid">
+      <div class="winner-card">
+        <div class="year">2002</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Sebi Schonholz<br>y Diego Brukman</div>
+      </div>
+      <div class="winner-card">
+        <div class="year">2006</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Pato</div>
+      </div>
+      <div class="winner-card">
+        <div class="year">2010</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Gianni Gonik</div>
+      </div>
+      <div class="winner-card">
+        <div class="year">2014</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Ezequiel Safdihe</div>
+      </div>
+      <div class="winner-card">
+        <div class="year">2018</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Sequi Vaisman</div>
+      </div>
+      <div class="winner-card">
+        <div class="year">2022</div>
+        <div class="year-label">Mundial</div>
+        <div class="divider"></div>
+        <div class="name">Ezequiel Wolff</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SISTEMA DE PUNTAJE -->
+<section class="scoring-section">
+  <div class="section">
+    <div class="section-header">
+      <h2>Sistema de puntaje</h2>
+    </div>
+
+    <div class="scoring-intro">
+      Por primera vez, además de los extras de 2 puntos, tenemos <strong>Extras Plus que valen 3 puntos</strong>.
+    </div>
+
+    <!-- EXTRAS PLUS - 3 PUNTOS -->
+    <div class="scoring-tier">
+      <div class="tier-header">
+        <h3>Extras PLUS</h3>
+        <span class="tier-badge plus">3 puntos c/u</span>
+      </div>
+      <div class="scoring-list plus">
+        <div class="row">
+          <span class="label">¿Quién será el CAMPEÓN del Mundial 2026?</span>
+          <span class="points">3 ptos</span>
+        </div>
+        <div class="row">
+          <span class="label">¿Cuántos goles se convertirán en la FINAL?</span>
+          <span class="points">3 ptos</span>
+        </div>
+        <div class="row">
+          <span class="label">¿Cuál de los siguientes jugadores convertirá MÁS GOLES?</span>
+          <span class="points">3 ptos</span>
+        </div>
+      </div>
+      <p class="note">Si hay empate en el goleador del Mundial, ganan todos los que eligieron alguno de los ganadores.</p>
+    </div>
+
+    <!-- EXTRAS - 2 PUNTOS -->
+    <div class="scoring-tier">
+      <div class="tier-header">
+        <h3>Extras</h3>
+        <span class="tier-badge">2 puntos c/u</span>
+      </div>
+      <div class="scoring-list">
+        <div class="row"><span class="label">Subcampeón del Mundial</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Tercer puesto</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Equipo más goleador del torneo</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Equipo menos goleado del torneo</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Mayor cantidad de goles en un solo partido</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Cantidad de goles del goleador del Mundial</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">Definiciones por penales de Argentina</span><span class="points">2 ptos</span></div>
+        <div class="row"><span class="label">De los equipos sin Mundial ganado, ¿quién llegará más lejos?</span><span class="points">2 ptos</span></div>
+      </div>
+    </div>
+
+    <!-- ACIERTO BASE - 1 PUNTO -->
+    <div class="scoring-tier">
+      <div class="tier-header">
+        <h3>Fase de grupos</h3>
+        <span class="tier-badge base">1 punto c/u</span>
+      </div>
+      <div class="scoring-list base">
+        <div class="row">
+          <span class="label">Acierto de resultado de partido (gana / empate / gana)</span>
+          <span class="points">1 pto</span>
+        </div>
+      </div>
+      <p class="note">72 partidos × 1 punto = 72 puntos posibles. Total máximo en juego: <strong>97 puntos.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- PREMIOS -->
+<section class="prizes-section" id="premios">
+  <div class="section">
+    <div class="section-header">
+      <h2>Premios</h2>
+      <p>El 100% de lo recaudado va a los premios. Ni los organizadores, ni los que colaboran, ni los ganadores de ediciones anteriores, ni nadie, tiene algún beneficio o descuento. No hay comisiones, ni costos, ni gastos extra. Toda la plata que se junte va a los premios.</p>
+    </div>
+
+    <div class="prizes-grid">
+      <div class="prize-card">
+        <div class="medal">🥈</div>
+        <div class="position">2do puesto</div>
+        <div class="reward">20%</div>
+      </div>
+      <div class="prize-card gold">
+        <div class="medal">🥇</div>
+        <div class="position">1er puesto</div>
+        <div class="reward">70%</div>
+      </div>
+      <div class="prize-card">
+        <div class="medal">🥉</div>
+        <div class="position">3er puesto</div>
+        <div class="reward">10%</div>
+      </div>
+    </div>
+
+    <div class="tiebreaker-box">
+      <h4>Qué pasa si hay empates</h4>
+      <p>En caso de empate en el 1ero, 2do o 3er puesto se eliminan los ganadores subsiguientes según corresponda.</p>
+      <div class="tie-examples">
+        <div class="tie-example">
+          <div class="tie-title">Empate en 1er puesto</div>
+          <ul>
+            <li>🥇 40% al ganador A</li>
+            <li>🥇 40% al ganador B</li>
+            <li>🥈 20% al 2do puesto</li>
+          </ul>
+        </div>
+        <div class="tie-example">
+          <div class="tie-title">Empate en 2do puesto</div>
+          <ul>
+            <li>🥇 70% al 1ero</li>
+            <li>🥈 15% al ganador A</li>
+            <li>🥈 15% al ganador B</li>
+          </ul>
+        </div>
+        <div class="tie-example">
+          <div class="tie-title">Empate en 3er puesto</div>
+          <ul>
+            <li>🥇 70% al 1ero</li>
+            <li>🥈 20% al 2do</li>
+            <li>🥉 5% y 5%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGLAS -->
+<section class="rules-section" id="reglas">
+  <div class="section">
+    <div class="section-header">
+      <h2>Reglas</h2>
+    </div>
+
+    <div class="rules-content">
+      <ol>
+        <li>El costo por boleta es de <strong>$25.000</strong> por participante.</li>
+        <li><strong>TODAS</strong> las boletas deben estar pagas <strong>ANTES del 9 de junio</strong>, 2 días antes del comienzo del Mundial. Boleta que no esté paga para esa fecha, no participa del prode, aún cuando su boleta haya sido publicada. Cada participante es responsable de hacer que el dinero le llegue a los organizadores.</li>
+        <li>Cada participante podrá realizar cuantas boletas quiera.</li>
+        <li>Antes del comienzo del Mundial, en la sección <strong>"Boletas publicadas"</strong> estarán TODAS las boletas de todos los participantes. Además, te vas a poder descargar todas juntas en un PDF.</li>
+        <li>Para participar, <a href="#" id="playNowRule">hacé click acá</a>, y llená tu boleta.</li>
+        <li>Se sumará <strong>1 punto por acierto en la fase regular</strong>, <strong>2 puntos en los extras</strong> y <strong>3 puntos en los Extra PLUS</strong>.</li>
+        <li>Para los extras, cuentan todos los goles convertidos durante los 90 minutos reglamentarios + los tiempos extras ocasionales. <strong>NO CUENTAN LOS GOLES CONVERTIDOS EN DEFINICIONES POR PENALES.</strong> Sí cuentan los penales ejecutados dentro de los 90' + tiempos extras.</li>
+        <li>En los últimos 6 mundiales organizamos un prode similar a éste y hasta ahora nunca sucedió, pero en caso que aparezca cualquier detalle no tenido en cuenta, se decidirá <em>"sobre la marcha"</em> por los organizadores, de la manera más justa e imparcial posible.</li>
+        <li>Es responsabilidad de cada participante chequear que su boleta haya sido correctamente publicada. En caso de haber un error en la publicación, hacerselo saber a los organizadores por mail a: <a href="mailto:2026prodemundial@gmail.com">2026prodemundial@gmail.com</a>. <em>Aclaración: Solo se harán cambios ANTES DEL INICIO DEL MUNDIAL y si se hubiera cometido un error en la publicación. Si te arrepentiste de algún resultado y lo querés cambiar, no será posible.</em></li>
+        <li>Los organizadores se reservan el derecho de admisión sobre los participantes.</li>
+        <li>La participación en este juego implica la aceptación de todas las reglas.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="#home">Inicio</a>
+    <a href="#reglas">Reglas</a>
+    <a href="#boletas">Boletas</a>
+    <a href="#mi-boleta">Mi boleta</a>
+    <a href="#tabla">Tabla</a>
+  </div>
+  <p>Prode Mundial 2026 · 7ma edición · Hecho con ⚽ y mate</p>
+</footer>
+
+<!-- BOTÓN FLOTANTE WHATSAPP -->
+<a href="https://chat.whatsapp.com/Ht4FYplXFMH30dsixar8Lv" target="_blank" rel="noopener" class="float-wa" aria-label="Sumate al grupo de WhatsApp">
+  <span class="wa-icon-big"></span>
+</a>
+
+<script>
+  // ===== COUNTDOWN AL MUNDIAL =====
+  const mundialStart = new Date('2026-06-11T18:00:00-05:00').getTime();
+  function updateCountdown() {
+    const now = Date.now();
+    const diff = mundialStart - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#60a5fa; font-size:26px; font-family:Bebas Neue, sans-serif; padding:20px; letter-spacing:2px;">¡EL MUNDIAL YA ARRANCÓ!</div>';
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('cd-days').textContent = days;
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+    document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ===== LINKS AL GOOGLE FORM =====
+  // Link real del prode 2026
+  const GOOGLE_FORM_URL = 'https://forms.gle/EbAPpbipsQa6HRps7';
+  document.querySelectorAll('#playNowNav, #playNowMain, #playNowRule').forEach(el => {
+    el.href = GOOGLE_FORM_URL;
+    el.target = '_blank';
+    el.rel = 'noopener';
+  });
+
+  // Cerrar menú móvil al click
+  document.querySelectorAll('.nav-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('navMenu').classList.remove('open'));
+  });
+
+  /*
+   * ========================================================================
+   * NOTA PARA FASE 2 (cuando cierre inscripción - junio 2026):
+   * ========================================================================
+   * En la sección "Mi Boleta", el comportamiento debe ser:
+   *  - Al cargar la página, NO mostrar ninguna boleta por defecto
+   *  - El input de búsqueda debe estar vacío
+   *  - Solo cuando el usuario empiece a tipear y seleccione un nombre del
+   *    autocomplete, recién ahí se renderiza la boleta correspondiente
+   *  - Mostrar un mensaje placeholder tipo "Buscá tu nombre para ver tu boleta"
+   *    mientras no haya nadie seleccionado.
+   * ========================================================================
+   */
+</script>
+
+</body>
+</html>
