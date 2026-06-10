@@ -1483,7 +1483,12 @@
     document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
   }
   updateCountdown();
-  setInterval(updateCountdown, 1000);
+  // Si ya arrancó el mundial, re-intentar hasta que LB_STATE cargue
+  const cdInterval = setInterval(() => {
+    updateCountdown();
+    // Una vez que cargaron los datos, parar el polling rápido
+    if (LB_STATE.boletas) clearInterval(cdInterval);
+  }, 1000);
 
   // ===== INSCRIPCIÓN CERRADA =====
   // Los botones de "Jugá ya" fueron removidos. La inscripción cerró el 9 de junio.
@@ -1511,7 +1516,7 @@
   const LB_CONFIG = {
     URL_BOLETAS: '/boletas.csv',
     // Pegar acá la URL CSV del Google Sheet de Resultados (paso 3 de las instrucciones):
-    URL_RESULTADOS: 'PEGAR_AQUI_LA_URL_CSV_DEL_SHEET_DE_RESULTADOS',
+    URL_RESULTADOS: 'https://docs.google.com/spreadsheets/d/1_Ztz_08xTT3gFqdAkWW4nItcL8x8Gg-VXGjQYK3FhHk/gviz/tq?tqx=out:csv&gid=0',
     REFRESH_MS: 60000,
     COL_NOMBRE: 'Nombre y Apellido'
   };
@@ -1967,8 +1972,8 @@
       // Resultados (Google Sheet)
       let resultados = [];
       if (LB_CONFIG.URL_RESULTADOS && !LB_CONFIG.URL_RESULTADOS.includes('PEGAR_AQUI')) {
-        const cacheBuster = (LB_CONFIG.URL_RESULTADOS.includes('?') ? '&' : '?') + '_t=' + Date.now();
-        const resRes = await fetch(LB_CONFIG.URL_RESULTADOS + cacheBuster);
+        // Fetch directo — gviz/tq de Google Sheets soporta CORS
+        const resRes = await fetch(LB_CONFIG.URL_RESULTADOS);
         if (resRes.ok) {
           const resText = await resRes.text();
           const resArr = parseCSV(resText);
