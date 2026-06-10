@@ -1159,14 +1159,14 @@
 
     <div>
       <div class="countdown-box">
-        <h3 id="cd-title">Arranca el Mundial en:</h3>
-        <div class="countdown-grid" id="countdown">
+        <h3 id="cd-title">⚽ Mundial en curso</h3>
+        <div class="countdown-grid" id="countdown" style="display:none;">
           <div class="countdown-item"><div class="num" id="cd-days">--</div><div class="unit">Días</div></div>
           <div class="countdown-item"><div class="num" id="cd-hours">--</div><div class="unit">Horas</div></div>
           <div class="countdown-item"><div class="num" id="cd-mins">--</div><div class="unit">Min</div></div>
           <div class="countdown-item"><div class="num" id="cd-secs">--</div><div class="unit">Seg</div></div>
         </div>
-        <div class="countdown-host" id="cd-host">
+        <div class="countdown-host" id="cd-host" style="display:none;">
           <span>11 Junio 2026 · México vs Sudáfrica</span>
           <span class="flags">🇺🇸 🇲🇽 🇨🇦</span>
         </div>
@@ -1443,15 +1443,15 @@
 
 <script>
   // ===== COUNTDOWN AL MUNDIAL =====
-  const mundialStart = new Date('2026-06-11T18:00:00-05:00').getTime();
+  const mundialStart = new Date('2026-06-11T00:00:00-05:00').getTime(); // Ya arrancó
   function updateCountdown() {
     const now = Date.now();
     const diff = mundialStart - now;
     if (diff <= 0) {
-      // Mundial ya arrancó: mostrar próximo partido desde el ranking state
+      // Mundial ya arrancó
       document.getElementById('cd-title').textContent = '⚽ Mundial en curso';
       document.getElementById('cd-host').style.display = 'none';
-      document.getElementById('countdown').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#22c55e; font-size:22px; font-family:Bebas Neue, sans-serif; padding:16px; letter-spacing:2px;">¡EN JUEGO!</div>';
+      document.getElementById('countdown').style.display = 'none';
       // Mostrar próximo partido si ya cargó el LB_STATE
       if (LB_STATE.boletas && LB_STATE.resultados) {
         const prox = calcularProximoPartido(LB_STATE.boletas, LB_STATE.resultados, LB_STATE.headersBoleta);
@@ -1776,16 +1776,8 @@
     `;
 
     // Si todavía no arrancó nada
-    if (stats.partidosJugados === 0 && stats.extrasResueltos === 0) {
-      document.getElementById('lb-podium').innerHTML = `
-        <div class="lb-empty" style="grid-column:1/-1;">
-          <div class="lb-empty-icon">⏳</div>
-          <div>Acá va a aparecer el podio<br>en cuanto haya resultados.</div>
-        </div>
-      `;
-      document.getElementById('lb-table').innerHTML = '';
-    } else {
-      // Podio top 3
+    {
+      // Podio top 3 — siempre mostrar aunque todos tengan 0
       const top3 = ranking.slice(0, 3);
       const [first, second, third] = top3;
       document.getElementById('lb-podium').innerHTML = `
@@ -1826,7 +1818,7 @@
 
     // Próximo partido
     const prox = calcularProximoPartido(boletas, resultados, LB_STATE.headersBoleta);
-    if (prox && stats.partidosJugados > 0) {
+    if (prox) {
       const total = boletas.length;
       const escDiv = document.getElementById('lb-next-match');
       escDiv.style.display = 'block';
