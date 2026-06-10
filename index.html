@@ -1159,24 +1159,19 @@
 
     <div>
       <div class="countdown-box">
-        <h3>Arranca el Mundial en:</h3>
+        <h3 id="cd-title">Arranca el Mundial en:</h3>
         <div class="countdown-grid" id="countdown">
           <div class="countdown-item"><div class="num" id="cd-days">--</div><div class="unit">Días</div></div>
           <div class="countdown-item"><div class="num" id="cd-hours">--</div><div class="unit">Horas</div></div>
           <div class="countdown-item"><div class="num" id="cd-mins">--</div><div class="unit">Min</div></div>
           <div class="countdown-item"><div class="num" id="cd-secs">--</div><div class="unit">Seg</div></div>
         </div>
-        <div class="countdown-host">
+        <div class="countdown-host" id="cd-host">
           <span>11 Junio 2026 · México vs Sudáfrica</span>
           <span class="flags">🇺🇸 🇲🇽 🇨🇦</span>
         </div>
+        <div id="cd-proximo" style="display:none; margin-top:14px; padding:12px 16px; background:rgba(37,99,235,0.15); border:1px solid rgba(96,165,250,0.3); border-radius:10px; font-size:14px; color:#fff; text-align:center; line-height:1.6;"></div>
       </div>
-
-      <div class="locked-sections-notice">
-        <span class="lock-icon">🔒</span>
-        <div>
-          <strong>Transparencia total:</strong> las 86 boletas quedaron registradas antes del inicio del Mundial. Podés descargarlas y verificar que ninguna se modifica durante el torneo.
-        </div>
       </div>
     </div>
   </div>
@@ -1453,7 +1448,29 @@
     const now = Date.now();
     const diff = mundialStart - now;
     if (diff <= 0) {
-      document.getElementById('countdown').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#60a5fa; font-size:26px; font-family:Bebas Neue, sans-serif; padding:20px; letter-spacing:2px;">¡EL MUNDIAL YA ARRANCÓ!</div>';
+      // Mundial ya arrancó: mostrar próximo partido desde el ranking state
+      document.getElementById('cd-title').textContent = '⚽ Mundial en curso';
+      document.getElementById('cd-host').style.display = 'none';
+      document.getElementById('countdown').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#22c55e; font-size:22px; font-family:Bebas Neue, sans-serif; padding:16px; letter-spacing:2px;">¡EN JUEGO!</div>';
+      // Mostrar próximo partido si ya cargó el LB_STATE
+      if (LB_STATE.boletas && LB_STATE.resultados) {
+        const prox = calcularProximoPartido(LB_STATE.boletas, LB_STATE.resultados, LB_STATE.headersBoleta);
+        const el = document.getElementById('cd-proximo');
+        if (prox) {
+          const total = LB_STATE.boletas.length;
+          el.style.display = 'block';
+          el.innerHTML = '<span style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Próximo partido</span><br>'
+            + '<strong style="font-family:Bebas Neue,sans-serif; font-size:20px; letter-spacing:1px;">' + prox.partido + '</strong><br>'
+            + '<span style="color:#94a3b8; font-size:12px;">'
+            + '🟦 ' + prox.equipoA + ': ' + prox.conteo[prox.equipoA] + ' · '
+            + '⬜ Empate: ' + prox.conteo['Empate'] + ' · '
+            + '🟥 ' + prox.equipoB + ': ' + prox.conteo[prox.equipoB]
+            + '</span>';
+        } else {
+          el.style.display = 'block';
+          el.innerHTML = '✅ Todos los partidos de grupos jugados';
+        }
+      }
       return;
     }
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -1492,7 +1509,7 @@
   /* ============ TABLA DE POSICIONES ============ */
   // CONFIGURACIÓN
   const LB_CONFIG = {
-    URL_BOLETAS: '/data/boletas.csv',
+    URL_BOLETAS: '/boletas.csv',
     // Pegar acá la URL CSV del Google Sheet de Resultados (paso 3 de las instrucciones):
     URL_RESULTADOS: 'PEGAR_AQUI_LA_URL_CSV_DEL_SHEET_DE_RESULTADOS',
     REFRESH_MS: 60000,
@@ -1775,7 +1792,7 @@
       // Tabla del 4° en adelante
       const resto = ranking.slice(0);
       const rows = resto.map((j, i) => {
-        const pos = i + 4;
+        const pos = i + 1;
         const mv = movimiento(j.nombre, pos, lastRanking);
         return `
           <tr onclick="abrirBoleta('${escapeQuote(j.nombre)}')">
@@ -1840,6 +1857,7 @@
 
     // Status: última actualización
     const now = new Date();
+    updateCountdown();
     document.getElementById('lb-last-update').textContent =
       `Actualizado ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} · refresh automático cada minuto`;
   }
