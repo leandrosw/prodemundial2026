@@ -1086,7 +1086,27 @@
     margin-left: 4px;
   }
 
-  /* Estado: sin resultados aún */
+  /* Buscador tabla */
+  .lb-search-wrap {
+    margin-bottom: 16px;
+  }
+  .lb-search-input {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 10px;
+    padding: 12px 18px;
+    color: #fff;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .lb-search-input::placeholder { color: #475569; }
+  .lb-search-input:focus { border-color: rgba(96, 165, 250, 0.7); }
+
+
   .lb-empty {
     text-align: center;
     padding: 60px 20px;
@@ -1111,8 +1131,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="#home">Inicio</a></li>
       <li><a href="#reglas">Reglas</a></li>
-      <li><a href="#boletas">Boletas publicadas</a></li>
-      <li><a href="#mi-boleta">Mi boleta</a></li>
+
       <li><a href="#tabla">Tabla de posiciones</a></li>
       <li><a href="/boletas-mundial-2026.pdf" class="cta" download>Descargar boletas</a></li>
     </ul>
@@ -1366,6 +1385,13 @@
     <!-- Podio top 3 -->
     <div class="lb-podium" id="lb-podium"></div>
 
+    <!-- Buscador -->
+    <div class="lb-search-wrap">
+      <input type="text" id="lb-search" class="lb-search-input"
+             placeholder="Buscar jugador por nombre o apellido..."
+             oninput="filtrarTabla(this.value)" autocomplete="off">
+    </div>
+
     <!-- Tabla del resto -->
     <div class="lb-table-wrapper">
       <table class="lb-table" id="lb-table"></table>
@@ -1410,7 +1436,6 @@
     <a href="#home">Inicio</a>
     <a href="#reglas">Reglas</a>
     <a href="#boletas">Boletas</a>
-    <a href="#mi-boleta">Mi boleta</a>
     <a href="#tabla">Tabla</a>
   </div>
   <p>Prode Mundial 2026 · 7ma edición · Hecho con ⚽ y mate</p>
@@ -1467,27 +1492,91 @@
   /* ============ TABLA DE POSICIONES ============ */
   // CONFIGURACIÓN
   const LB_CONFIG = {
-    URL_BOLETAS: '/boletas.csv',
+    URL_BOLETAS: '/data/boletas.csv',
     // Pegar acá la URL CSV del Google Sheet de Resultados (paso 3 de las instrucciones):
-    URL_RESULTADOS: 'https://docs.google.com/spreadsheets/d/1_Ztz_08xTT3gFqdAkWW4nItcL8x8Gg-VXGjQYK3FhHk/gviz/tq?tqx=out:csv&gid=0',
+    URL_RESULTADOS: 'PEGAR_AQUI_LA_URL_CSV_DEL_SHEET_DE_RESULTADOS',
     REFRESH_MS: 60000,
     COL_NOMBRE: 'Nombre y Apellido'
   };
 
   // Fixture ordenado de los 72 partidos (en orden cronológico aproximado)
+  // Fixture en orden cronológico real (fuente: ESPN/FIFA oficial)
   const FIXTURE = [
-    "México vs Sudáfrica","Corea del Sur vs República Checa","República Checa vs Sudáfrica","México vs Corea del Sur","República Checa vs México","Sudáfrica vs Corea del Sur",
-    "Canadá vs Bosnia y Herzegovina","Qatar vs Suiza","Suiza vs Bosnia y Herzegovina","Canadá vs Qatar","Suiza vs Canadá","Bosnia y Herzegovina vs Qatar",
-    "Brasil vs Marruecos","Haití vs Escocia","Escocia vs Marruecos","Brasil vs Haití","Escocia vs Brasil","Marruecos vs Haití",
-    "Estados Unidos vs Paraguay","Australia vs Turquía","Turquía vs Paraguay","Estados Unidos vs Australia","Turquía vs Estados Unidos","Paraguay vs Australia",
-    "Alemania vs Curazao","Costa de Marfil vs Ecuador","Alemania vs Costa de Marfil","Ecuador vs Curazao","Ecuador vs Alemania","Curazao vs Costa de Marfil",
-    "Países Bajos vs Japón","Suecia vs Túnez","Países Bajos vs Suecia","Túnez vs Japón","Japón vs Suecia","Túnez vs Países Bajos",
-    "Bélgica vs Egipto","Irán vs Nueva Zelanda","Bélgica vs Irán","Nueva Zelanda vs Egipto","Egipto vs Irán","Nueva Zelanda vs Bélgica",
-    "España vs Cabo Verde","Arabia Saudita vs Uruguay","España vs Arabia Saudita","Uruguay vs Cabo Verde","Cabo Verde vs Arabia Saudita","Uruguay vs España",
-    "Francia vs Senegal","Iraq vs Noruega","Francia vs Iraq","Noruega vs Senegal","Noruega vs Francia","Senegal vs Iraq",
-    "Argentina vs Argelia","Austria vs Jordania","Argentina vs Austria","Jordania vs Argelia","Argelia vs Austria","Jordania vs Argentina",
-    "Portugal vs RD del Congo","Uzbekistán vs Colombia","Portugal vs Uzbekistán","RD del Congo vs Colombia","Colombia vs Portugal","RD del Congo vs Uzbekistán",
-    "Inglaterra vs Croacia","Ghana vs Panamá","Inglaterra vs Ghana","Panamá vs Croacia","Panamá vs Inglaterra","Croacia vs Ghana"
+    // Jornada 1
+    "México vs Sudáfrica",           // 11 jun - Azteca
+    "Corea del Sur vs República Checa", // 11 jun - Guadalajara
+    "Canadá vs Bosnia y Herzegovina",// 12 jun - Toronto
+    "Estados Unidos vs Paraguay",    // 12 jun - LA
+    "Qatar vs Suiza",                // 13 jun - San Francisco
+    "Brasil vs Marruecos",           // 13 jun - Nueva Jersey
+    "Haití vs Escocia",              // 13 jun - Boston
+    "Australia vs Turquía",          // 13/14 jun - Vancouver
+    "Alemania vs Curazao",           // 14 jun - Houston
+    "Países Bajos vs Japón",         // 14 jun - Dallas
+    "Costa de Marfil vs Ecuador",    // 14 jun - Philadelphia
+    "Suecia vs Túnez",               // 14 jun - Monterrey
+    "España vs Cabo Verde",          // 15 jun - Atlanta
+    "Bélgica vs Egipto",             // 15 jun - Seattle
+    "Arabia Saudita vs Uruguay",     // 15 jun - Miami
+    "Irán vs Nueva Zelanda",         // 15 jun - LA
+    "Francia vs Senegal",            // 16 jun - Nueva Jersey
+    "Iraq vs Noruega",               // 16 jun - Boston
+    "Argentina vs Argelia",          // 16 jun - Kansas City
+    "Austria vs Jordania",           // 16/17 jun - San Francisco
+    "Portugal vs RD del Congo",      // 17 jun - Houston
+    "Inglaterra vs Croacia",         // 17 jun - Dallas
+    "Ghana vs Panamá",               // 17 jun - Toronto
+    "Uzbekistán vs Colombia",        // 17 jun - Ciudad de México
+    // Jornada 2
+    "República Checa vs Sudáfrica",  // 18 jun - Atlanta
+    "Suiza vs Bosnia y Herzegovina", // 18 jun - LA
+    "Canadá vs Qatar",               // 18 jun - Vancouver
+    "México vs Corea del Sur",       // 18 jun - Guadalajara
+    "Estados Unidos vs Australia",   // 19 jun - Seattle
+    "Escocia vs Marruecos",          // 19 jun - Boston
+    "Brasil vs Haití",               // 19 jun - Philadelphia
+    "Turquía vs Paraguay",           // 19/20 jun - San Francisco
+    "Países Bajos vs Suecia",        // 20 jun - Houston
+    "Alemania vs Costa de Marfil",   // 20 jun - Toronto
+    "Ecuador vs Curazao",            // 20 jun - Kansas City
+    "Túnez vs Japón",                // 20/21 jun - Monterrey
+    "España vs Arabia Saudita",      // 21 jun - Atlanta
+    "Bélgica vs Irán",               // 21 jun - LA
+    "Uruguay vs Cabo Verde",         // 21 jun - Miami
+    "Nueva Zelanda vs Egipto",       // 21 jun - Vancouver
+    "Argentina vs Austria",          // 22 jun - Dallas
+    "Francia vs Iraq",               // 22 jun - Philadelphia
+    "Noruega vs Senegal",            // 22 jun - Nueva Jersey
+    "Jordania vs Argelia",           // 22/23 jun - San Francisco
+    "Portugal vs Uzbekistán",        // 23 jun - Houston
+    "Inglaterra vs Ghana",           // 23 jun - Boston
+    "Panamá vs Croacia",             // 23 jun - Toronto
+    "RD del Congo vs Colombia",      // 23 jun - Guadalajara
+    // Jornada 3 (simultáneos por grupo)
+    "Suiza vs Canadá",               // 24 jun - Vancouver
+    "Bosnia y Herzegovina vs Qatar", // 24 jun - Seattle
+    "Marruecos vs Haití",            // 24 jun - Atlanta
+    "Escocia vs Brasil",             // 24 jun - Miami
+    "Sudáfrica vs Corea del Sur",    // 24 jun - Monterrey
+    "República Checa vs México",     // 24 jun - Ciudad de México
+    "Curazao vs Costa de Marfil",    // 25 jun - Philadelphia
+    "Ecuador vs Alemania",           // 25 jun - Nueva Jersey
+    "Japón vs Suecia",               // 25 jun - Dallas
+    "Túnez vs Países Bajos",         // 25 jun - Kansas City
+    "Paraguay vs Australia",         // 25 jun - San Francisco
+    "Turquía vs Estados Unidos",     // 25 jun - LA
+    "Noruega vs Francia",            // 26 jun - Boston
+    "Senegal vs Iraq",               // 26 jun - Toronto
+    "Cabo Verde vs Arabia Saudita",  // 26 jun - Houston
+    "Uruguay vs España",             // 26 jun - Guadalajara
+    "Egipto vs Irán",                // 26/27 jun - Seattle
+    "Nueva Zelanda vs Bélgica",      // 26/27 jun - Vancouver
+    "Croacia vs Ghana",              // 27 jun - Philadelphia
+    "Panamá vs Inglaterra",          // 27 jun - Nueva Jersey
+    "Colombia vs Portugal",          // 27 jun - Miami
+    "RD del Congo vs Uzbekistán",    // 27 jun - Atlanta
+    "Argelia vs Austria",            // 27 jun - Kansas City
+    "Jordania vs Argentina"          // 27 jun - Dallas
   ];
 
   // Estado global
@@ -1684,19 +1773,16 @@
       `;
 
       // Tabla del 4° en adelante
-      const resto = ranking.slice(3);
-      const maxPts = ranking[0]?.total || 1;
+      const resto = ranking.slice(0);
       const rows = resto.map((j, i) => {
         const pos = i + 4;
         const mv = movimiento(j.nombre, pos, lastRanking);
-        const pctBar = Math.max(2, (j.total / maxPts) * 100);
         return `
           <tr onclick="abrirBoleta('${escapeQuote(j.nombre)}')">
             <td class="lb-pos">${pos}</td>
             <td class="center">${mv}</td>
             <td class="lb-name">${escapeHtml(j.nombre)}</td>
-            <td class="center"><span class="lb-pts-breakdown">${j.grupos}·${j.extras}·${j.extrasPlus}</span></td>
-            <td class="center"><div class="lb-bar"><div class="lb-bar-fill" style="width:${pctBar}%"></div></div></td>
+            <td class="center"><span class="lb-pts-breakdown">${j.grupos}·${j.extrasPlus}</span></td>
             <td class="right"><span class="lb-pts-total">${j.total}</span></td>
           </tr>
         `;
@@ -1708,8 +1794,7 @@
             <th>Pos</th>
             <th class="center">↕</th>
             <th>Jugador</th>
-            <th class="center" title="Grupos · Extras 2pts · Extras PLUS">G · E · P</th>
-            <th class="center">Progreso</th>
+            <th class="center" title="Grupos · Extras PLUS">G · P</th>
             <th class="right">Pts</th>
           </tr>
         </thead>
@@ -1828,6 +1913,25 @@
   window.closeBoletaModal = function() {
     document.getElementById('lb-modal').style.display = 'none';
     document.body.style.overflow = '';
+  };
+
+  window.filtrarTabla = function(query) {
+    const q = query.toLowerCase().trim();
+    const rows = document.querySelectorAll('#lb-table tbody tr');
+    rows.forEach(row => {
+      const nombre = row.querySelector('.lb-name');
+      if (!nombre) return;
+      const match = !q || nombre.textContent.toLowerCase().includes(q);
+      row.style.display = match ? '' : 'none';
+    });
+    // Si hay match exacto único, abrir modal automáticamente
+    if (q.length >= 3) {
+      const visibles = [...rows].filter(r => r.style.display !== 'none');
+      if (visibles.length === 1) {
+        const nombre = visibles[0].querySelector('.lb-name')?.textContent;
+        if (nombre) abrirBoleta(nombre);
+      }
+    }
   };
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBoletaModal(); });
