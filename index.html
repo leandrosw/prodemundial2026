@@ -696,7 +696,7 @@
       <li><a href="#boletas">Boletas publicadas</a></li>
       <li><a href="#mi-boleta">Mi boleta</a></li>
       <li><a href="#tabla">Tabla de posiciones</a></li>
-      <li><a href="#" class="cta" id="playNowNav">Jugá ahora</a></li>
+      <li><a href="/boletas-mundial-2026.pdf" class="cta" download>Descargar boletas</a></li>
     </ul>
   </nav>
 </header>
@@ -705,14 +705,14 @@
 <section class="hero" id="home">
   <div class="hero-content">
     <div class="hero-text">
-      <span class="play-tag">Jugá ya!</span>
+      <span class="play-tag">86 boletas en juego</span>
       <h1>Prode Mundial <span class="accent">2026</span></h1>
       <div class="edition">7ma edición</div>
       <p class="subtitle">
         <strong>72 partidos</strong> de fase de grupos + <strong>15 extras</strong>. Una boleta. La gloria eterna.
       </p>
       <div class="hero-cta">
-        <a href="#" class="btn-primary" id="playNowMain">Jugá ya</a>
+        <a href="/boletas-mundial-2026.pdf" class="btn-primary" download>Descargar las 86 boletas</a>
         <a href="https://chat.whatsapp.com/Ht4FYplXFMH30dsixar8Lv" target="_blank" rel="noopener" class="btn-whatsapp">
           <span class="wa-icon"></span>
           Sumate al grupo de Whatsapp
@@ -738,7 +738,7 @@
       <div class="locked-sections-notice">
         <span class="lock-icon">🔒</span>
         <div>
-          Las secciones <strong>"Boletas publicadas"</strong>, <strong>"Mi boleta"</strong> y <strong>"Tabla de posiciones"</strong> serán habilitadas una vez cerrada la inscripción, dos días antes del inicio del mundial.
+          <strong>Transparencia total:</strong> las 86 boletas quedaron registradas antes del inicio del Mundial. Podés descargarlas y verificar que ninguna se modifica durante el torneo.
         </div>
       </div>
     </div>
@@ -938,7 +938,7 @@
         <li><strong>TODAS</strong> las boletas deben estar pagas <strong>ANTES del 9 de junio</strong>, 2 días antes del comienzo del Mundial. Boleta que no esté paga para esa fecha, no participa del prode, aún cuando su boleta haya sido publicada. Cada participante es responsable de hacer que el dinero le llegue a los organizadores.</li>
         <li>Cada participante podrá realizar cuantas boletas quiera.</li>
         <li>Antes del comienzo del Mundial, en la sección <strong>"Boletas publicadas"</strong> estarán TODAS las boletas de todos los participantes. Además, te vas a poder descargar todas juntas en un PDF.</li>
-        <li>Para participar, <a href="#" id="playNowRule">hacé click acá</a>, y llená tu boleta.</li>
+        <li>La inscripción está cerrada. Se cerró el 9 de junio, 2 días antes del inicio del Mundial.</li>
         <li>Se sumará <strong>1 punto por acierto en la fase regular</strong>, <strong>2 puntos en los extras</strong> y <strong>3 puntos en los Extra PLUS</strong>.</li>
         <li>Para los extras, cuentan todos los goles convertidos durante los 90 minutos reglamentarios + los tiempos extras ocasionales. <strong>NO CUENTAN LOS GOLES CONVERTIDOS EN DEFINICIONES POR PENALES.</strong> Sí cuentan los penales ejecutados dentro de los 90' + tiempos extras.</li>
         <li>En los últimos 6 mundiales organizamos un prode similar a éste y hasta ahora nunca sucedió, pero en caso que aparezca cualquier detalle no tenido en cuenta, se decidirá <em>"sobre la marcha"</em> por los organizadores, de la manera más justa e imparcial posible.</li>
@@ -989,14 +989,8 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // ===== LINKS AL GOOGLE FORM =====
-  // Link real del prode 2026
-  const GOOGLE_FORM_URL = 'https://forms.gle/EbAPpbipsQa6HRps7';
-  document.querySelectorAll('#playNowNav, #playNowMain, #playNowRule').forEach(el => {
-    el.href = GOOGLE_FORM_URL;
-    el.target = '_blank';
-    el.rel = 'noopener';
-  });
+  // ===== INSCRIPCIÓN CERRADA =====
+  // Los botones de "Jugá ya" fueron removidos. La inscripción cerró el 9 de junio.
 
   // Cerrar menú móvil al click
   document.querySelectorAll('.nav-menu a').forEach(a => {
