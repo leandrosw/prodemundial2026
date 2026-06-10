@@ -1443,7 +1443,7 @@
 
 <script>
   // ===== COUNTDOWN AL MUNDIAL =====
-  const mundialStart = new Date('2026-06-11T00:00:00-05:00').getTime(); // Ya arrancó
+  const mundialStart = new Date('2026-06-10T00:00:00Z').getTime(); // Mundial en curso
   function updateCountdown() {
     const now = Date.now();
     const diff = mundialStart - now;
@@ -1473,7 +1473,7 @@
       } else {
         // Sheet todavía no cargó: mostrar primer partido del fixture
         el.innerHTML = '<span style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Próximo partido</span><br>'
-          + '<strong style="font-family:Bebas Neue,sans-serif; font-size:22px; letter-spacing:1px;">' + FIXTURE[0] + '</strong><br>'
+          + '<strong style="font-family:Bebas Neue,sans-serif; font-size:22px; letter-spacing:1px;">México vs Sudáfrica</strong><br>'
           + '<span style="color:#64748b; font-size:12px;">Cargando picks...</span>';
       }
       return;
