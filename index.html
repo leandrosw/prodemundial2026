@@ -1452,24 +1452,29 @@
       document.getElementById('cd-title').textContent = '⚽ Mundial en curso';
       document.getElementById('cd-host').style.display = 'none';
       document.getElementById('countdown').style.display = 'none';
-      // Mostrar próximo partido si ya cargó el LB_STATE
+      const el = document.getElementById('cd-proximo');
+      el.style.display = 'block';
+
       if (LB_STATE.boletas && LB_STATE.resultados) {
+        // Sheet cargado: mostrar próximo partido real con escenarios
         const prox = calcularProximoPartido(LB_STATE.boletas, LB_STATE.resultados, LB_STATE.headersBoleta);
-        const el = document.getElementById('cd-proximo');
         if (prox) {
           const total = LB_STATE.boletas.length;
-          el.style.display = 'block';
           el.innerHTML = '<span style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Próximo partido</span><br>'
-            + '<strong style="font-family:Bebas Neue,sans-serif; font-size:20px; letter-spacing:1px;">' + prox.partido + '</strong><br>'
-            + '<span style="color:#94a3b8; font-size:12px;">'
-            + '🟦 ' + prox.equipoA + ': ' + prox.conteo[prox.equipoA] + ' · '
-            + '⬜ Empate: ' + prox.conteo['Empate'] + ' · '
-            + '🟥 ' + prox.equipoB + ': ' + prox.conteo[prox.equipoB]
+            + '<strong style="font-family:Bebas Neue,sans-serif; font-size:22px; letter-spacing:1px;">' + prox.partido + '</strong><br>'
+            + '<span style="color:#94a3b8; font-size:12px; margin-top:4px; display:block;">'
+            + '🔵 ' + prox.equipoA + ': <strong style="color:#fff">' + prox.conteo[prox.equipoA] + '</strong> &nbsp;·&nbsp; '
+            + '⚪ Empate: <strong style="color:#fff">' + prox.conteo['Empate'] + '</strong> &nbsp;·&nbsp; '
+            + '🔴 ' + prox.equipoB + ': <strong style="color:#fff">' + prox.conteo[prox.equipoB] + '</strong>'
             + '</span>';
         } else {
-          el.style.display = 'block';
-          el.innerHTML = '✅ Todos los partidos de grupos jugados';
+          el.innerHTML = '✅ <strong>Todos los partidos de grupos jugados</strong>';
         }
+      } else {
+        // Sheet todavía no cargó: mostrar primer partido del fixture
+        el.innerHTML = '<span style="color:#94a3b8; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Próximo partido</span><br>'
+          + '<strong style="font-family:Bebas Neue,sans-serif; font-size:22px; letter-spacing:1px;">' + FIXTURE[0] + '</strong><br>'
+          + '<span style="color:#64748b; font-size:12px;">Cargando picks...</span>';
       }
       return;
     }
