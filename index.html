@@ -680,6 +680,424 @@
     .winners-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
     .winner-card .year { font-size: 54px; }
   }
+  /* ============ TABLA DE POSICIONES ============ */
+  .leaderboard-section {
+    padding: 60px 0;
+    background: linear-gradient(180deg, #050810 0%, #0a1020 100%);
+  }
+
+  /* Status barrita */
+  .lb-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .lb-pulse {
+    width: 8px; height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: lbPulse 2s infinite;
+  }
+  @keyframes lbPulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+  }
+
+  /* Stats globales */
+  .lb-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .lb-stat {
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .lb-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: #60a5fa;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .lb-stat-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* Próximo partido + escenarios */
+  .lb-next-match {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 40px;
+  }
+  .lb-next-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .lb-next-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: #fff;
+    letter-spacing: 2px;
+  }
+  .lb-next-badge {
+    background: #2563eb;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .lb-scenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .lb-scenario {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .lb-scenario:hover {
+    border-color: rgba(96, 165, 250, 0.4);
+    transform: translateY(-2px);
+  }
+  .lb-scenario-label {
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .lb-scenario-team {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .lb-scenario-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #60a5fa;
+    line-height: 1;
+  }
+  .lb-scenario-suffix {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* PODIO TOP 3 */
+  .lb-podium {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+    align-items: end;
+  }
+  @media (max-width: 640px) {
+    .lb-podium { grid-template-columns: 1fr; }
+  }
+  .lb-podium-card {
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .lb-podium-card:hover { transform: translateY(-4px); }
+  .lb-podium-card.gold {
+    background: linear-gradient(180deg, rgba(251, 191, 36, 0.2) 0%, rgba(180, 130, 20, 0.08) 100%);
+    border: 2px solid rgba(251, 191, 36, 0.5);
+    padding: 32px 16px;
+  }
+  .lb-podium-card.silver {
+    background: linear-gradient(180deg, rgba(203, 213, 225, 0.15) 0%, rgba(100, 116, 139, 0.05) 100%);
+    border: 2px solid rgba(203, 213, 225, 0.35);
+  }
+  .lb-podium-card.bronze {
+    background: linear-gradient(180deg, rgba(202, 138, 4, 0.15) 0%, rgba(120, 80, 10, 0.05) 100%);
+    border: 2px solid rgba(202, 138, 4, 0.4);
+  }
+  .lb-podium-medal {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .gold .lb-podium-medal { color: #fbbf24; }
+  .silver .lb-podium-medal { color: #cbd5e1; }
+  .bronze .lb-podium-medal { color: #ca8a04; }
+  .lb-podium-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: #fff;
+    margin: 8px 0;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    min-height: 40px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gold .lb-podium-name { font-size: 24px; }
+  .lb-podium-pts {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: #fff;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .gold .lb-podium-pts { font-size: 56px; color: #fbbf24; }
+  .lb-podium-pts-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* Tabla resto */
+  .lb-table-wrapper {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .lb-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .lb-table thead {
+    background: rgba(37, 99, 235, 0.15);
+  }
+  .lb-table th {
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #94a3b8;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .lb-table th.center { text-align: center; }
+  .lb-table th.right { text-align: right; }
+  .lb-table tbody tr {
+    border-top: 1px solid rgba(96, 165, 250, 0.08);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .lb-table tbody tr:hover {
+    background: rgba(37, 99, 235, 0.1);
+  }
+  .lb-table td {
+    padding: 14px 12px;
+    color: #e2e8f0;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .lb-table td.center { text-align: center; }
+  .lb-table td.right { text-align: right; }
+  .lb-pos {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: #94a3b8;
+    width: 50px;
+  }
+  .lb-name { font-weight: 500; color: #fff; }
+  .lb-pts-total {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: #60a5fa;
+    letter-spacing: 1px;
+  }
+  .lb-pts-breakdown {
+    font-size: 11px;
+    color: #64748b;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .lb-move-up { color: #22c55e; font-weight: bold; }
+  .lb-move-down { color: #ef4444; font-weight: bold; }
+  .lb-move-same { color: #64748b; }
+  .lb-bar {
+    background: rgba(96, 165, 250, 0.15);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 100px;
+  }
+  .lb-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #60a5fa);
+    border-radius: 3px;
+    transition: width 0.5s;
+  }
+
+  /* Modal boleta */
+  .lb-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .lb-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+  }
+  .lb-modal-content {
+    position: relative;
+    background: #0a1020;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .lb-modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .lb-modal-close:hover { color: #fff; }
+  .lb-modal-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .lb-modal-subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .lb-modal-breakdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 500px) {
+    .lb-modal-breakdown { grid-template-columns: repeat(2, 1fr); }
+  }
+  .lb-modal-bd {
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .lb-modal-bd-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: #60a5fa;
+    line-height: 1;
+  }
+  .lb-modal-bd-label {
+    font-size: 10px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+  .lb-modal-picks {
+    display: grid;
+    gap: 4px;
+  }
+  .lb-pick {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .lb-pick.correct {
+    background: rgba(34, 197, 94, 0.1);
+    border-left: 3px solid #22c55e;
+  }
+  .lb-pick.wrong {
+    background: rgba(239, 68, 68, 0.08);
+    border-left: 3px solid #ef4444;
+    opacity: 0.6;
+  }
+  .lb-pick.pending {
+    border-left: 3px solid #475569;
+  }
+  .lb-pick-name {
+    color: #cbd5e1;
+    flex: 1;
+    margin-right: 12px;
+  }
+  .lb-pick-value {
+    color: #fff;
+    font-weight: 600;
+    text-align: right;
+  }
+  .lb-pick.correct .lb-pick-value::after {
+    content: ' ✓';
+    color: #22c55e;
+    margin-left: 4px;
+  }
+  .lb-pick.wrong .lb-pick-value::after {
+    content: ' ✗';
+    color: #ef4444;
+    margin-left: 4px;
+  }
+
+  /* Estado: sin resultados aún */
+  .lb-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+  }
+  .lb-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
 </style>
 </head>
 <body>
@@ -925,6 +1343,42 @@
   </div>
 </section>
 
+<!-- TABLA DE POSICIONES -->
+<section class="leaderboard-section" id="tabla">
+  <div class="section">
+    <div class="section-header">
+      <h2>Tabla de Posiciones</h2>
+      <p id="lb-subtitle">Esperando primeros resultados...</p>
+    </div>
+
+    <!-- Status: última actualización + refresh -->
+    <div class="lb-status" id="lb-status">
+      <span class="lb-pulse"></span>
+      <span id="lb-last-update">Cargando...</span>
+    </div>
+
+    <!-- Stats globales -->
+    <div class="lb-stats-bar" id="lb-stats"></div>
+
+    <!-- Próximo partido con escenarios -->
+    <div class="lb-next-match" id="lb-next-match" style="display:none;"></div>
+
+    <!-- Podio top 3 -->
+    <div class="lb-podium" id="lb-podium"></div>
+
+    <!-- Tabla del resto -->
+    <div class="lb-table-wrapper">
+      <table class="lb-table" id="lb-table"></table>
+    </div>
+
+    <!-- Modal: boleta del jugador -->
+    <div class="lb-modal" id="lb-modal" style="display:none;">
+      <div class="lb-modal-overlay" onclick="closeBoletaModal()"></div>
+      <div class="lb-modal-content" id="lb-modal-content"></div>
+    </div>
+  </div>
+</section>
+
 <!-- REGLAS -->
 <section class="rules-section" id="reglas">
   <div class="section">
@@ -1010,6 +1464,441 @@
    *    mientras no haya nadie seleccionado.
    * ========================================================================
    */
+  /* ============ TABLA DE POSICIONES ============ */
+  // CONFIGURACIÓN
+  const LB_CONFIG = {
+    URL_BOLETAS: '/data/boletas.csv',
+    // Pegar acá la URL CSV del Google Sheet de Resultados (paso 3 de las instrucciones):
+    URL_RESULTADOS: 'https://docs.google.com/spreadsheets/d/1_Ztz_08xTT3gFqdAkWW4nItcL8x8Gg-VXGjQYK3FhHk/edit?usp=sharing',
+    REFRESH_MS: 60000,
+    COL_NOMBRE: 'Nombre y Apellido'
+  };
+
+  // Fixture ordenado de los 72 partidos (en orden cronológico aproximado)
+  const FIXTURE = [
+    "México vs Sudáfrica","Corea del Sur vs República Checa","República Checa vs Sudáfrica","México vs Corea del Sur","República Checa vs México","Sudáfrica vs Corea del Sur",
+    "Canadá vs Bosnia y Herzegovina","Qatar vs Suiza","Suiza vs Bosnia y Herzegovina","Canadá vs Qatar","Suiza vs Canadá","Bosnia y Herzegovina vs Qatar",
+    "Brasil vs Marruecos","Haití vs Escocia","Escocia vs Marruecos","Brasil vs Haití","Escocia vs Brasil","Marruecos vs Haití",
+    "Estados Unidos vs Paraguay","Australia vs Turquía","Turquía vs Paraguay","Estados Unidos vs Australia","Turquía vs Estados Unidos","Paraguay vs Australia",
+    "Alemania vs Curazao","Costa de Marfil vs Ecuador","Alemania vs Costa de Marfil","Ecuador vs Curazao","Ecuador vs Alemania","Curazao vs Costa de Marfil",
+    "Países Bajos vs Japón","Suecia vs Túnez","Países Bajos vs Suecia","Túnez vs Japón","Japón vs Suecia","Túnez vs Países Bajos",
+    "Bélgica vs Egipto","Irán vs Nueva Zelanda","Bélgica vs Irán","Nueva Zelanda vs Egipto","Egipto vs Irán","Nueva Zelanda vs Bélgica",
+    "España vs Cabo Verde","Arabia Saudita vs Uruguay","España vs Arabia Saudita","Uruguay vs Cabo Verde","Cabo Verde vs Arabia Saudita","Uruguay vs España",
+    "Francia vs Senegal","Iraq vs Noruega","Francia vs Iraq","Noruega vs Senegal","Noruega vs Francia","Senegal vs Iraq",
+    "Argentina vs Argelia","Austria vs Jordania","Argentina vs Austria","Jordania vs Argelia","Argelia vs Austria","Jordania vs Argentina",
+    "Portugal vs RD del Congo","Uzbekistán vs Colombia","Portugal vs Uzbekistán","RD del Congo vs Colombia","Colombia vs Portugal","RD del Congo vs Uzbekistán",
+    "Inglaterra vs Croacia","Ghana vs Panamá","Inglaterra vs Ghana","Panamá vs Croacia","Panamá vs Inglaterra","Croacia vs Ghana"
+  ];
+
+  // Estado global
+  let LB_STATE = {
+    boletas: null,
+    resultados: null,
+    ranking: null,
+    lastRanking: null  // del refresh anterior, para movimientos
+  };
+
+  // CSV parser (maneja comillas)
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inQuotes) {
+        if (c === '"' && text[i+1] === '"') { field += '"'; i++; }
+        else if (c === '"') { inQuotes = false; }
+        else { field += c; }
+      } else {
+        if (c === '"') { inQuotes = true; }
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\n' || c === '\r') {
+          if (c === '\r' && text[i+1] === '\n') i++;
+          row.push(field); field = '';
+          if (row.length > 1 || row[0] !== '') rows.push(row);
+          row = [];
+        } else { field += c; }
+      }
+    }
+    if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(h => h.trim());
+    return rows.slice(1).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (r[i] || '').trim());
+      return obj;
+    });
+  }
+
+  // Normalizar nombre para matchear sheet ↔ boletas
+  function normalizeCampo(s) {
+    return String(s || '')
+      .replace(/\s+/g, ' ')
+      .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
+      .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
+      .replace(/\s+- $/, '')
+      .trim()
+      .toLowerCase();
+  }
+
+  // Peso según el tipo declarado en el sheet de resultados
+  function getPesoFromTipo(tipo) {
+    const t = String(tipo || '').toLowerCase().trim();
+    if (t.includes('plus')) return 3;
+    if (t.includes('extra')) return 2;
+    return 1;
+  }
+
+  // Calcular puntos para cada jugador
+  function calcularRanking(boletas, resultados, headersBoleta) {
+    // resultados es array de {nombre, resultado, tipo, normKey, peso}
+    // Construir map: normKey → {resultado, peso, headerOriginal}
+    // Y para cada resultado, encontrar el header de boleta que matchea
+    const headerMap = {};
+    for (const h of headersBoleta) headerMap[normalizeCampo(h)] = h;
+
+    const resultadosByHeader = {}; // headerOriginal de boleta → {resultado, peso}
+    for (const r of resultados) {
+      const headerBoleta = headerMap[r.normKey];
+      if (headerBoleta) {
+        resultadosByHeader[headerBoleta] = { resultado: r.resultado, peso: r.peso };
+      }
+    }
+
+    return boletas.map(b => {
+      let total = 0, grupos = 0, extras = 0, extrasPlus = 0;
+      let acertados = 0, jugados = 0;
+      const picksDetalle = [];
+
+      for (const headerBoleta of Object.keys(resultadosByHeader)) {
+        const { resultado, peso } = resultadosByHeader[headerBoleta];
+        const pick = b[headerBoleta];
+        if (pick === undefined || pick === '') continue;
+
+        if (!resultado || resultado === '') {
+          picksDetalle.push({ campo: headerBoleta, pick, resultado: '', estado: 'pending', peso });
+          continue;
+        }
+
+        jugados++;
+        const acierto = pick === resultado;
+        if (acierto) {
+          acertados++;
+          total += peso;
+          if (peso === 3) extrasPlus += 3;
+          else if (peso === 2) extras += 2;
+          else grupos += 1;
+        }
+        picksDetalle.push({ campo: headerBoleta, pick, resultado, estado: acierto ? 'correct' : 'wrong', peso });
+      }
+
+      return {
+        nombre: b[LB_CONFIG.COL_NOMBRE] || '(sin nombre)',
+        total, grupos, extras, extrasPlus,
+        acertados, jugados,
+        picks: b,
+        picksDetalle
+      };
+    }).sort((a, b) => b.total - a.total || b.acertados - a.acertados || a.nombre.localeCompare(b.nombre));
+  }
+
+  // Calcular escenarios del próximo partido
+  function calcularProximoPartido(boletas, resultados, headersBoleta) {
+    const headerMap = {};
+    for (const h of headersBoleta) headerMap[normalizeCampo(h)] = h;
+
+    // Encontrar el primer partido del fixture sin resultado en el sheet
+    for (const partido of FIXTURE) {
+      const resObj = resultados.find(r => r.normKey === normalizeCampo(partido));
+      if (!resObj || !resObj.resultado || resObj.resultado === '') {
+        // Este es el próximo partido
+        const headerBoleta = headerMap[normalizeCampo(partido)];
+        if (!headerBoleta) continue;
+        const [equipoA, equipoB] = partido.split(' vs ');
+        const conteo = { [equipoA]: 0, 'Empate': 0, [equipoB]: 0, otros: 0 };
+        for (const b of boletas) {
+          const pick = b[headerBoleta];
+          if (conteo[pick] !== undefined) conteo[pick]++;
+          else conteo.otros++;
+        }
+        return { partido, equipoA, equipoB, conteo };
+      }
+    }
+    return null;
+  }
+
+  // Stats globales
+  function calcularStats(ranking, resultados) {
+    const fixtureSet = new Set(FIXTURE.map(normalizeCampo));
+    const partidosJugados = resultados.filter(r =>
+      fixtureSet.has(r.normKey) && r.resultado && r.resultado !== ''
+    ).length;
+    const extrasResueltos = resultados.filter(r =>
+      !fixtureSet.has(r.normKey) && r.resultado && r.resultado !== ''
+    ).length;
+    const lider = ranking[0] || null;
+    return {
+      partidosJugados,
+      extrasResueltos,
+      totalJugadores: ranking.length,
+      liderPts: lider ? lider.total : 0,
+      liderNombre: lider ? lider.nombre : '-'
+    };
+  }
+
+  // RENDER
+  function renderTabla() {
+    const { ranking, resultados, boletas, lastRanking } = LB_STATE;
+    const stats = calcularStats(ranking, resultados);
+
+    // Subtitle
+    document.getElementById('lb-subtitle').textContent =
+      stats.partidosJugados === 0
+        ? 'El Mundial todavía no arrancó. La tabla se llenará apenas haya resultados.'
+        : `${stats.partidosJugados} de 72 partidos jugados · ${stats.extrasResueltos} de 15 extras resueltos`;
+
+    // Stats bar
+    document.getElementById('lb-stats').innerHTML = `
+      <div class="lb-stat"><div class="lb-stat-num">${stats.partidosJugados}/72</div><div class="lb-stat-label">Partidos jugados</div></div>
+      <div class="lb-stat"><div class="lb-stat-num">${stats.extrasResueltos}/15</div><div class="lb-stat-label">Extras resueltos</div></div>
+      <div class="lb-stat"><div class="lb-stat-num">${stats.liderPts}</div><div class="lb-stat-label">Pts del puntero</div></div>
+      <div class="lb-stat"><div class="lb-stat-num">${stats.totalJugadores}</div><div class="lb-stat-label">Jugadores</div></div>
+    `;
+
+    // Si todavía no arrancó nada
+    if (stats.partidosJugados === 0 && stats.extrasResueltos === 0) {
+      document.getElementById('lb-podium').innerHTML = `
+        <div class="lb-empty" style="grid-column:1/-1;">
+          <div class="lb-empty-icon">⏳</div>
+          <div>Acá va a aparecer el podio<br>en cuanto haya resultados.</div>
+        </div>
+      `;
+      document.getElementById('lb-table').innerHTML = '';
+    } else {
+      // Podio top 3
+      const top3 = ranking.slice(0, 3);
+      const [first, second, third] = top3;
+      document.getElementById('lb-podium').innerHTML = `
+        ${second ? podioCard(second, 2, 'silver', getIdx(ranking, second)) : '<div></div>'}
+        ${first ? podioCard(first, 1, 'gold', getIdx(ranking, first)) : '<div></div>'}
+        ${third ? podioCard(third, 3, 'bronze', getIdx(ranking, third)) : '<div></div>'}
+      `;
+
+      // Tabla del 4° en adelante
+      const resto = ranking.slice(3);
+      const maxPts = ranking[0]?.total || 1;
+      const rows = resto.map((j, i) => {
+        const pos = i + 4;
+        const mv = movimiento(j.nombre, pos, lastRanking);
+        const pctBar = Math.max(2, (j.total / maxPts) * 100);
+        return `
+          <tr onclick="abrirBoleta('${escapeQuote(j.nombre)}')">
+            <td class="lb-pos">${pos}</td>
+            <td class="center">${mv}</td>
+            <td class="lb-name">${escapeHtml(j.nombre)}</td>
+            <td class="center"><span class="lb-pts-breakdown">${j.grupos}·${j.extras}·${j.extrasPlus}</span></td>
+            <td class="center"><div class="lb-bar"><div class="lb-bar-fill" style="width:${pctBar}%"></div></div></td>
+            <td class="right"><span class="lb-pts-total">${j.total}</span></td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('lb-table').innerHTML = resto.length > 0 ? `
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th class="center">↕</th>
+            <th>Jugador</th>
+            <th class="center" title="Grupos · Extras 2pts · Extras PLUS">G · E · P</th>
+            <th class="center">Progreso</th>
+            <th class="right">Pts</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      ` : '';
+    }
+
+    // Próximo partido
+    const prox = calcularProximoPartido(boletas, resultados, LB_STATE.headersBoleta);
+    if (prox && stats.partidosJugados > 0) {
+      const total = boletas.length;
+      const escDiv = document.getElementById('lb-next-match');
+      escDiv.style.display = 'block';
+      escDiv.innerHTML = `
+        <div class="lb-next-header">
+          <div class="lb-next-title">PRÓXIMO: ${escapeHtml(prox.partido)}</div>
+          <span class="lb-next-badge">Qué pasa si...</span>
+        </div>
+        <div class="lb-scenarios">
+          <div class="lb-scenario">
+            <div class="lb-scenario-label">Si gana</div>
+            <div class="lb-scenario-team">${escapeHtml(prox.equipoA)}</div>
+            <div class="lb-scenario-count">${prox.conteo[prox.equipoA]}</div>
+            <div class="lb-scenario-suffix">de ${total} aciertan</div>
+          </div>
+          <div class="lb-scenario">
+            <div class="lb-scenario-label">Si</div>
+            <div class="lb-scenario-team">EMPATAN</div>
+            <div class="lb-scenario-count">${prox.conteo['Empate']}</div>
+            <div class="lb-scenario-suffix">de ${total} aciertan</div>
+          </div>
+          <div class="lb-scenario">
+            <div class="lb-scenario-label">Si gana</div>
+            <div class="lb-scenario-team">${escapeHtml(prox.equipoB)}</div>
+            <div class="lb-scenario-count">${prox.conteo[prox.equipoB]}</div>
+            <div class="lb-scenario-suffix">de ${total} aciertan</div>
+          </div>
+        </div>
+      `;
+    } else {
+      document.getElementById('lb-next-match').style.display = 'none';
+    }
+
+    // Status: última actualización
+    const now = new Date();
+    document.getElementById('lb-last-update').textContent =
+      `Actualizado ${now.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} · refresh automático cada minuto`;
+  }
+
+  function podioCard(jugador, pos, klass, idx) {
+    const medal = pos === 1 ? '1°' : pos === 2 ? '2°' : '3°';
+    return `
+      <div class="lb-podium-card ${klass}" onclick="abrirBoleta('${escapeQuote(jugador.nombre)}')">
+        <div class="lb-podium-medal">${medal}</div>
+        <div class="lb-podium-name">${escapeHtml(jugador.nombre)}</div>
+        <div class="lb-podium-pts">${jugador.total}</div>
+        <div class="lb-podium-pts-label">puntos</div>
+      </div>
+    `;
+  }
+
+  function getIdx(ranking, j) { return ranking.indexOf(j); }
+
+  function movimiento(nombre, posActual, lastRanking) {
+    if (!lastRanking) return '<span class="lb-move-same">–</span>';
+    const idxAntes = lastRanking.findIndex(x => x.nombre === nombre);
+    if (idxAntes === -1) return '<span class="lb-move-same">–</span>';
+    const posAntes = idxAntes + 1;
+    const delta = posAntes - posActual;
+    if (delta > 0) return `<span class="lb-move-up">▲${delta}</span>`;
+    if (delta < 0) return `<span class="lb-move-down">▼${Math.abs(delta)}</span>`;
+    return '<span class="lb-move-same">–</span>';
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function escapeQuote(s) { return String(s).replace(/'/g, "\\'"); }
+
+  // Abrir modal con la boleta
+  window.abrirBoleta = function(nombre) {
+    const jugador = LB_STATE.ranking.find(j => j.nombre === nombre);
+    if (!jugador) return;
+
+    const fixtureSet = new Set(FIXTURE.map(normalizeCampo));
+    const partidos = jugador.picksDetalle.filter(p => fixtureSet.has(normalizeCampo(p.campo)));
+    const extras = jugador.picksDetalle.filter(p => !fixtureSet.has(normalizeCampo(p.campo)));
+
+    const renderPick = p => `
+      <div class="lb-pick ${p.estado}">
+        <span class="lb-pick-name">${escapeHtml(p.campo)}</span>
+        <span class="lb-pick-value">${escapeHtml(p.pick)}</span>
+      </div>
+    `;
+
+    document.getElementById('lb-modal-content').innerHTML = `
+      <button class="lb-modal-close" onclick="closeBoletaModal()">×</button>
+      <div class="lb-modal-header">
+        <h3>${escapeHtml(jugador.nombre)}</h3>
+        <div class="lb-modal-subtitle">${jugador.acertados} aciertos de ${jugador.jugados} jugados</div>
+      </div>
+      <div class="lb-modal-breakdown">
+        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.total}</div><div class="lb-modal-bd-label">Total</div></div>
+        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.grupos}</div><div class="lb-modal-bd-label">Grupos</div></div>
+        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extras}</div><div class="lb-modal-bd-label">Extras</div></div>
+        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extrasPlus}</div><div class="lb-modal-bd-label">Extras PLUS</div></div>
+      </div>
+      ${extras.length > 0 ? `<h4 style="color:#60a5fa; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin: 16px 0 8px;">Extras</h4><div class="lb-modal-picks">${extras.map(renderPick).join('')}</div>` : ''}
+      <h4 style="color:#60a5fa; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin: 24px 0 8px;">Partidos</h4>
+      <div class="lb-modal-picks">${partidos.map(renderPick).join('')}</div>
+    `;
+    document.getElementById('lb-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeBoletaModal = function() {
+    document.getElementById('lb-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBoletaModal(); });
+
+  // FETCH y refresh
+  async function fetchLB() {
+    try {
+      // Boletas (estático del repo)
+      const boletasRes = await fetch(LB_CONFIG.URL_BOLETAS);
+      if (!boletasRes.ok) throw new Error('No se pudo cargar boletas.csv');
+      const boletasText = await boletasRes.text();
+      const boletas = parseCSV(boletasText);
+      const headersBoleta = boletas.length > 0 ? Object.keys(boletas[0]) : [];
+
+      // Resultados (Google Sheet)
+      let resultados = [];
+      if (LB_CONFIG.URL_RESULTADOS && !LB_CONFIG.URL_RESULTADOS.includes('PEGAR_AQUI')) {
+        const cacheBuster = (LB_CONFIG.URL_RESULTADOS.includes('?') ? '&' : '?') + '_t=' + Date.now();
+        const resRes = await fetch(LB_CONFIG.URL_RESULTADOS + cacheBuster);
+        if (resRes.ok) {
+          const resText = await resRes.text();
+          const resArr = parseCSV(resText);
+          for (const r of resArr) {
+            const keys = Object.keys(r);
+            const nombreKey = keys.find(k => /nombre|partido|extra/i.test(k)) || keys[0];
+            const resKey = keys.find(k => /resultado/i.test(k)) || keys[1];
+            const tipoKey = keys.find(k => /tipo|categor|peso|pts/i.test(k)) || keys[2];
+            const nombre = (r[nombreKey] || '').trim();
+            if (!nombre) continue;
+            resultados.push({
+              nombre,
+              resultado: (r[resKey] || '').trim(),
+              tipo: (r[tipoKey] || 'Partido').trim(),
+              normKey: normalizeCampo(nombre),
+              peso: getPesoFromTipo(r[tipoKey] || 'Partido')
+            });
+          }
+        }
+      }
+
+      // Guardar ranking anterior para movimientos
+      if (LB_STATE.ranking) LB_STATE.lastRanking = LB_STATE.ranking;
+
+      LB_STATE.boletas = boletas;
+      LB_STATE.headersBoleta = headersBoleta;
+      LB_STATE.resultados = resultados;
+      LB_STATE.ranking = calcularRanking(boletas, resultados, headersBoleta);
+
+      // Persistir lastRanking entre refreshes de página
+      try {
+        const stored = localStorage.getItem('lb_lastRanking');
+        if (stored && !LB_STATE.lastRanking) {
+          LB_STATE.lastRanking = JSON.parse(stored);
+        }
+        localStorage.setItem('lb_lastRanking', JSON.stringify(LB_STATE.ranking.map(r => ({nombre: r.nombre, total: r.total}))));
+      } catch(e) {}
+
+      renderTabla();
+    } catch (err) {
+      console.error('Error cargando tabla:', err);
+      const sub = document.getElementById('lb-subtitle');
+      if (sub) sub.textContent = 'Error cargando la tabla. Reintentando en 1 minuto...';
+    }
+  }
+
+  // Iniciar cuando esté el DOM
+  if (document.getElementById('tabla')) {
+    fetchLB();
+    setInterval(fetchLB, LB_CONFIG.REFRESH_MS);
+  }
+
 </script>
 
 </body>
