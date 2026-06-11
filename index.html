@@ -1649,10 +1649,12 @@
   // Normalizar nombre para matchear sheet ↔ boletas
   function normalizeCampo(s) {
     return String(s || '')
+      .replace(/[\r\n]+/g, ' ')
       .replace(/\s+/g, ' ')
       .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
       .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
       .replace(/\s+- $/, '')
+      .replace(/[""]/g, '"')
       .trim()
       .toLowerCase();
   }
@@ -1910,10 +1912,13 @@
     const fixtureNorm = FIXTURE.map(normalizeCampo);
     const fixtureSet = new Set(fixtureNorm);
 
-    // Headers de la boleta en orden: primero los del fixture, luego los extras
-    const headers = Object.keys(jugador.picks).filter(h => h !== LB_CONFIG.COL_NOMBRE && jugador.picks[h] !== '');
+    // Campos personales a excluir
+    const CAMPOS_PERSONALES = new Set(['timestamp','email address','nombre y apellido','número de whatsapp (no se publica)','¿a quién conocés del prode, o quién te pasó el form?'].map(s => s.toLowerCase()));
+
+    // Headers de la boleta: todos excepto datos personales
+    const headers = Object.keys(jugador.picks).filter(h => !CAMPOS_PERSONALES.has(h.toLowerCase()));
     const headersPartidos = headers.filter(h => fixtureSet.has(normalizeCampo(h)));
-    const headersExtras = headers.filter(h => !fixtureSet.has(normalizeCampo(h)));
+    const headersExtras = headers.filter(h => !fixtureSet.has(normalizeCampo(h)) && jugador.picks[h] !== '');
 
     const buildPick = (h) => {
       const pick = jugador.picks[h];
