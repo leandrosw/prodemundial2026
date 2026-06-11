@@ -1900,9 +1900,30 @@
     const jugador = LB_STATE.ranking.find(j => j.nombre === nombre);
     if (!jugador) return;
 
-    const fixtureSet = new Set(FIXTURE.map(normalizeCampo));
-    const partidos = jugador.picksDetalle.filter(p => fixtureSet.has(normalizeCampo(p.campo)));
-    const extras = jugador.picksDetalle.filter(p => !fixtureSet.has(normalizeCampo(p.campo)));
+    // Construir map de resultados conocidos: normKey → {resultado, peso}
+    const resMap = {};
+    for (const r of LB_STATE.resultados) {
+      resMap[r.normKey] = { resultado: r.resultado, peso: r.peso };
+    }
+
+    // Armar picks completos desde la boleta original (picks contiene el objeto completo)
+    const fixtureNorm = FIXTURE.map(normalizeCampo);
+    const fixtureSet = new Set(fixtureNorm);
+
+    // Headers de la boleta en orden: primero los del fixture, luego los extras
+    const headers = Object.keys(jugador.picks).filter(h => h !== LB_CONFIG.COL_NOMBRE && jugador.picks[h] !== '');
+    const headersPartidos = headers.filter(h => fixtureSet.has(normalizeCampo(h)));
+    const headersExtras = headers.filter(h => !fixtureSet.has(normalizeCampo(h)));
+
+    const buildPick = (h) => {
+      const pick = jugador.picks[h];
+      const res = resMap[normalizeCampo(h)];
+      let estado = 'pending';
+      if (res && res.resultado) {
+        estado = pick === res.resultado ? 'correct' : 'wrong';
+      }
+      return { campo: h, pick, estado };
+    };
 
     const renderPick = p => `
       <div class="lb-pick ${p.estado}">
@@ -1911,21 +1932,24 @@
       </div>
     `;
 
+    const pickExtras = headersExtras.map(buildPick);
+    const pickPartidos = headersPartidos.map(buildPick);
+
     document.getElementById('lb-modal-content').innerHTML = `
       <button class="lb-modal-close" onclick="closeBoletaModal()">×</button>
       <div class="lb-modal-header">
         <h3>${escapeHtml(jugador.nombre)}</h3>
-        <div class="lb-modal-subtitle">${jugador.acertados} aciertos de ${jugador.jugados} jugados</div>
+        <div class="lb-modal-subtitle">${jugador.acertados} aciertos de ${jugador.jugados} jugados · ${jugador.total} pts</div>
       </div>
       <div class="lb-modal-breakdown">
         <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.total}</div><div class="lb-modal-bd-label">Total</div></div>
         <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.grupos}</div><div class="lb-modal-bd-label">Grupos</div></div>
         <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extras}</div><div class="lb-modal-bd-label">Extras</div></div>
-        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extrasPlus}</div><div class="lb-modal-bd-label">Extras PLUS</div></div>
+        <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extrasPlus}</div><div class="lb-modal-bd-label">PLUS</div></div>
       </div>
-      ${extras.length > 0 ? `<h4 style="color:#60a5fa; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin: 16px 0 8px;">Extras</h4><div class="lb-modal-picks">${extras.map(renderPick).join('')}</div>` : ''}
-      <h4 style="color:#60a5fa; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:1px; margin: 24px 0 8px;">Partidos</h4>
-      <div class="lb-modal-picks">${partidos.map(renderPick).join('')}</div>
+      ${pickExtras.length > 0 ? `<h4 style="color:#60a5fa;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin:16px 0 8px;">Extras (${pickExtras.length})</h4><div class="lb-modal-picks">${pickExtras.map(renderPick).join('')}</div>` : ''}
+      <h4 style="color:#60a5fa;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin:24px 0 8px;">Partidos (${pickPartidos.length})</h4>
+      <div class="lb-modal-picks">${pickPartidos.map(renderPick).join('')}</div>
     `;
     document.getElementById('lb-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
