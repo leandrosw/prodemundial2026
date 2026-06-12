@@ -1133,10 +1133,52 @@
       <li><a href="#reglas">Reglas</a></li>
 
       <li><a href="#tabla">Tabla de posiciones</a></li>
-      <li><a href="/boletas-mundial-2026.pdf" class="cta" download>Descargar boletas</a></li>
     </ul>
   </nav>
 </header>
+
+<!-- TABLA DE POSICIONES -->
+<section class="leaderboard-section" id="tabla">
+  <div class="section">
+    <div class="section-header">
+      <h2>Tabla de Posiciones</h2>
+      <p id="lb-subtitle">Esperando primeros resultados...</p>
+    </div>
+
+    <!-- Status: última actualización + refresh -->
+    <div class="lb-status" id="lb-status">
+      <span class="lb-pulse"></span>
+      <span id="lb-last-update">Cargando...</span>
+    </div>
+
+    <!-- Stats globales -->
+    <div class="lb-stats-bar" id="lb-stats"></div>
+
+    <!-- Próximo partido con escenarios -->
+    <div class="lb-next-match" id="lb-next-match" style="display:none;"></div>
+
+    <!-- Podio top 3 -->
+    <div class="lb-podium" id="lb-podium"></div>
+
+    <!-- Buscador -->
+    <div class="lb-search-wrap">
+      <input type="text" id="lb-search" class="lb-search-input"
+             placeholder="Buscar jugador por nombre o apellido..."
+             oninput="filtrarTabla(this.value)" autocomplete="off">
+    </div>
+
+    <!-- Tabla del resto -->
+    <div class="lb-table-wrapper">
+      <table class="lb-table" id="lb-table"></table>
+    </div>
+
+    <!-- Modal: boleta del jugador -->
+    <div class="lb-modal" id="lb-modal" style="display:none;">
+      <div class="lb-modal-overlay" onclick="closeBoletaModal()"></div>
+      <div class="lb-modal-content" id="lb-modal-content"></div>
+    </div>
+  </div>
+</section>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -1149,8 +1191,7 @@
         <strong>72 partidos</strong> de fase de grupos + <strong>15 extras</strong>. Una boleta. La gloria eterna.
       </p>
       <div class="hero-cta">
-        <a href="/boletas-mundial-2026.pdf" class="btn-primary" download>Descargar las 86 boletas</a>
-        <a href="https://chat.whatsapp.com/Ht4FYplXFMH30dsixar8Lv" target="_blank" rel="noopener" class="btn-whatsapp">
+<a href="https://chat.whatsapp.com/Ht4FYplXFMH30dsixar8Lv" target="_blank" rel="noopener" class="btn-whatsapp">
           <span class="wa-icon"></span>
           Sumate al grupo de Whatsapp
         </a>
@@ -1357,49 +1398,6 @@
   </div>
 </section>
 
-<!-- TABLA DE POSICIONES -->
-<section class="leaderboard-section" id="tabla">
-  <div class="section">
-    <div class="section-header">
-      <h2>Tabla de Posiciones</h2>
-      <p id="lb-subtitle">Esperando primeros resultados...</p>
-    </div>
-
-    <!-- Status: última actualización + refresh -->
-    <div class="lb-status" id="lb-status">
-      <span class="lb-pulse"></span>
-      <span id="lb-last-update">Cargando...</span>
-    </div>
-
-    <!-- Stats globales -->
-    <div class="lb-stats-bar" id="lb-stats"></div>
-
-    <!-- Próximo partido con escenarios -->
-    <div class="lb-next-match" id="lb-next-match" style="display:none;"></div>
-
-    <!-- Podio top 3 -->
-    <div class="lb-podium" id="lb-podium"></div>
-
-    <!-- Buscador -->
-    <div class="lb-search-wrap">
-      <input type="text" id="lb-search" class="lb-search-input"
-             placeholder="Buscar jugador por nombre o apellido..."
-             oninput="filtrarTabla(this.value)" autocomplete="off">
-    </div>
-
-    <!-- Tabla del resto -->
-    <div class="lb-table-wrapper">
-      <table class="lb-table" id="lb-table"></table>
-    </div>
-
-    <!-- Modal: boleta del jugador -->
-    <div class="lb-modal" id="lb-modal" style="display:none;">
-      <div class="lb-modal-overlay" onclick="closeBoletaModal()"></div>
-      <div class="lb-modal-content" id="lb-modal-content"></div>
-    </div>
-  </div>
-</section>
-
 <!-- REGLAS -->
 <section class="rules-section" id="reglas">
   <div class="section">
@@ -1434,6 +1432,7 @@
     <a href="#tabla">Tabla</a>
   </div>
   <p>Prode Mundial 2026 · 7ma edición · Hecho con ⚽ y mate</p>
+  <p style="margin-top:8px;"><a href="/boletas-mundial-2026.pdf" download style="color:#475569; font-size:12px; text-decoration:none;">📄 Descargar las 86 boletas (PDF)</a></p>
 </footer>
 
 <!-- BOTÓN FLOTANTE WHATSAPP -->
@@ -1804,7 +1803,6 @@
             <td class="lb-pos">${pos}</td>
             <td class="center">${mv}</td>
             <td class="lb-name">${escapeHtml(j.nombre)}</td>
-            <td class="center"><span class="lb-pts-breakdown">${j.grupos}·${j.extrasPlus}</span></td>
             <td class="right"><span class="lb-pts-total">${j.total}</span></td>
           </tr>
         `;
@@ -1816,7 +1814,6 @@
             <th>Pos</th>
             <th class="center">↕</th>
             <th>Jugador</th>
-            <th class="center" title="Grupos · Extras PLUS">G · P</th>
             <th class="right">Pts</th>
           </tr>
         </thead>
@@ -1908,16 +1905,27 @@
       resMap[r.normKey] = { resultado: r.resultado, peso: r.peso };
     }
 
-    // Armar picks completos desde la boleta original (picks contiene el objeto completo)
     const fixtureNorm = FIXTURE.map(normalizeCampo);
     const fixtureSet = new Set(fixtureNorm);
 
-    // Campos personales a excluir
+    // Próximo partido sin resultado
+    const proximoNorm = (() => {
+      for (const p of FIXTURE) {
+        const res = resMap[normalizeCampo(p)];
+        if (!res || !res.resultado) return normalizeCampo(p);
+      }
+      return null;
+    })();
+
     const CAMPOS_PERSONALES = new Set(['timestamp','email address','nombre y apellido','número de whatsapp (no se publica)','¿a quién conocés del prode, o quién te pasó el form?'].map(s => s.toLowerCase()));
 
-    // Headers de la boleta: todos excepto datos personales
     const headers = Object.keys(jugador.picks).filter(h => !CAMPOS_PERSONALES.has(h.toLowerCase()));
-    const headersPartidos = headers.filter(h => fixtureSet.has(normalizeCampo(h)));
+
+    // Partidos ordenados cronológicamente
+    const headersPartidos = headers
+      .filter(h => fixtureSet.has(normalizeCampo(h)))
+      .sort((a, b) => fixtureNorm.indexOf(normalizeCampo(a)) - fixtureNorm.indexOf(normalizeCampo(b)));
+
     const headersExtras = headers.filter(h => !fixtureSet.has(normalizeCampo(h)) && jugador.picks[h] !== '');
 
     const buildPick = (h) => {
@@ -1930,12 +1938,15 @@
       return { campo: h, pick, estado };
     };
 
-    const renderPick = p => `
-      <div class="lb-pick ${p.estado}">
-        <span class="lb-pick-name">${escapeHtml(p.campo)}</span>
+    const renderPick = p => {
+      const esProximo = proximoNorm && normalizeCampo(p.campo) === proximoNorm;
+      const extraStyle = esProximo ? 'border:2px solid #fbbf24; background:rgba(251,191,36,0.08);' : '';
+      const badge = esProximo ? '<span style="background:#fbbf24;color:#000;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:8px;letter-spacing:1px;">PRÓXIMO</span>' : '';
+      return `<div class="lb-pick ${p.estado}" style="${extraStyle}">
+        <span class="lb-pick-name">${escapeHtml(p.campo)}${badge}</span>
         <span class="lb-pick-value">${escapeHtml(p.pick)}</span>
-      </div>
-    `;
+      </div>`;
+    };
 
     const pickExtras = headersExtras.map(buildPick);
     const pickPartidos = headersPartidos.map(buildPick);
@@ -2054,6 +2065,7 @@
   }
 
 </script>
+
 
 </body>
 </html>
