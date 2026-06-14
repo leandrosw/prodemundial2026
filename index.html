@@ -1968,82 +1968,47 @@
       </div>`;
     }).join('');
 
-    // Sección 2: Mejor escenario del día (fuerza bruta, max 8 partidos)
-    let mejorEscenario = null;
+    // Calcular mejor posición posible hoy
+    const posActual = LB_STATE.ranking.findIndex(j => j.nombre === jugador.nombre) + 1;
+    let mejorPos = posActual;
     if (partidosHoy.length <= 8) {
-      const posActual = LB_STATE.ranking.findIndex(j => j.nombre === jugador.nombre) + 1;
-      const opciones = ['A', 'E', 'B']; // gana equipoA, empate, gana equipoB
-      const nPartidos = partidosHoy.length;
-      let mejorPos = posActual;
-      let mejorCombinacion = null;
-
-      // Iterar todas las combinaciones
-      const total = Math.pow(3, nPartidos);
+      const total = Math.pow(3, partidosHoy.length);
       for (let i = 0; i < total; i++) {
         let temp = i;
-        const combinacion = [];
-        for (let j = 0; j < nPartidos; j++) {
-          combinacion.push(temp % 3);
-          temp = Math.floor(temp / 3);
-        }
-
-        // Calcular puntos para cada jugador en este escenario
         const puntosExtra = {};
         LB_STATE.ranking.forEach(j2 => { puntosExtra[j2.nombre] = 0; });
-
-        combinacion.forEach((opIdx, pIdx) => {
-          const partido = partidosHoy[pIdx];
+        for (let k = 0; k < partidosHoy.length; k++) {
+          const opIdx = temp % 3; temp = Math.floor(temp / 3);
+          const partido = partidosHoy[k];
           const [eA, eB] = partido.split(' vs ');
           const resultado = opIdx === 0 ? eA : opIdx === 1 ? 'Empate' : eB;
           const hdr = hdrMap[normalizeCampo(partido)];
-          if (!hdr) return;
+          if (!hdr) continue;
           LB_STATE.boletas.forEach(b => {
             if (b[hdr] === resultado) {
-              const j2 = LB_STATE.ranking.find(r => r.nombre === b['Nombre y Apellido']);
-              if (j2) puntosExtra[j2.nombre] = (puntosExtra[j2.nombre] || 0) + 1;
+              const n2 = b['Nombre y Apellido'];
+              if (puntosExtra[n2] !== undefined) puntosExtra[n2]++;
             }
           });
-        });
-
-        // Calcular nueva posición de este jugador
-        const newRanking = LB_STATE.ranking.map(j2 => ({
-          nombre: j2.nombre,
-          total: j2.total + (puntosExtra[j2.nombre] || 0)
-        })).sort((a, b) => b.total - a.total);
-
-        const newPos = newRanking.findIndex(j2 => j2.nombre === jugador.nombre) + 1;
-        if (newPos < mejorPos) {
-          mejorPos = newPos;
-          mejorCombinacion = combinacion.map((opIdx, pIdx) => {
-            const partido = partidosHoy[pIdx];
-            const [eA, eB] = partido.split(' vs ');
-            return { partido, resultado: opIdx === 0 ? eA : opIdx === 1 ? 'Empate' : eB };
-          });
         }
-      }
-
-      if (mejorCombinacion && mejorPos < posActual) {
-        mejorEscenario = { posActual, mejorPos, combinacion: mejorCombinacion };
+        const newPos = LB_STATE.ranking
+          .map(j2 => ({ nombre: j2.nombre, total: j2.total + (puntosExtra[j2.nombre] || 0) }))
+          .sort((a, b) => b.total - a.total)
+          .findIndex(j2 => j2.nombre === jugador.nombre) + 1;
+        if (newPos < mejorPos) mejorPos = newPos;
       }
     }
 
-    const escenarioHTML = mejorEscenario ? `
-      <div style="margin-top:8px;">
-        <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">Si se dan estos resultados, pasás del <strong style="color:#fff">puesto ${mejorEscenario.posActual}</strong> al <strong style="color:#22c55e;font-size:16px;">puesto ${mejorEscenario.mejorPos}</strong> 🚀</div>
-        ${mejorEscenario.combinacion.map(c => `
-          <div style="display:flex;justify-content:space-between;padding:6px 12px;background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;border-radius:4px;margin-bottom:3px;font-size:12px;">
-            <span style="color:#94a3b8;">${escapeHtml(c.partido)}</span>
-            <span style="color:#22c55e;font-weight:700;">${escapeHtml(c.resultado)}</span>
-          </div>`).join('')}
-      </div>` : `<div style="font-size:12px;color:#64748b;margin-top:8px;">Ya estás en tu mejor posición posible hoy 💪</div>`;
+    const posHTML = mejorPos < posActual
+      ? `<div style="margin-top:12px;padding:10px 14px;background:rgba(34,197,94,0.1);border-left:3px solid #22c55e;border-radius:6px;font-size:13px;color:#94a3b8;">Si acertás todos tus picks de hoy, podés pasar del <strong style="color:#fff">puesto ${posActual}</strong> al <strong style="color:#22c55e;font-size:16px;">puesto ${mejorPos}</strong> 🚀</div>`
+      : `<div style="margin-top:12px;padding:10px 14px;background:rgba(100,116,139,0.1);border-left:3px solid #475569;border-radius:6px;font-size:13px;color:#64748b;">Hoy no podés subir posiciones aunque aciertes todo 💪</div>`;
 
     return `
       <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:16px;margin:16px 0;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:#60a5fa;margin-bottom:12px;">⚽ Tu día de hoy · ${partidosHoy.length} partidos</div>
         <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">${consensoCount} con el consenso · ${uniqueCount} diferente${uniqueCount !== 1 ? 's' : ''}</div>
         ${rowsHoy}
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:#60a5fa;margin:16px 0 8px;">🎯 Mejor escenario del día</div>
-        ${escenarioHTML}
+        ${posHTML}
       </div>`;
   }
 
