@@ -1612,6 +1612,32 @@
     "Jordania vs Argentina"          // 27 jun - Dallas
   ];
 
+  // Mapa partido → fecha (día del mes de junio 2026)
+  const FIXTURE_FECHAS = {
+    "México vs Sudáfrica": 11, "Corea del Sur vs República Checa": 11,
+    "Canadá vs Bosnia y Herzegovina": 12, "Estados Unidos vs Paraguay": 12,
+    "Qatar vs Suiza": 13, "Brasil vs Marruecos": 13, "Haití vs Escocia": 13, "Australia vs Turquía": 13,
+    "Alemania vs Curazao": 14, "Países Bajos vs Japón": 14, "Costa de Marfil vs Ecuador": 14, "Suecia vs Túnez": 14,
+    "España vs Cabo Verde": 15, "Bélgica vs Egipto": 15, "Arabia Saudita vs Uruguay": 15, "Irán vs Nueva Zelanda": 15,
+    "Francia vs Senegal": 16, "Iraq vs Noruega": 16, "Argentina vs Argelia": 16, "Austria vs Jordania": 16,
+    "Portugal vs RD del Congo": 17, "Inglaterra vs Croacia": 17, "Ghana vs Panamá": 17, "Uzbekistán vs Colombia": 17,
+    "República Checa vs Sudáfrica": 18, "Suiza vs Bosnia y Herzegovina": 18, "Canadá vs Qatar": 18, "México vs Corea del Sur": 18,
+    "Estados Unidos vs Australia": 19, "Escocia vs Marruecos": 19, "Brasil vs Haití": 19, "Turquía vs Paraguay": 19,
+    "Países Bajos vs Suecia": 20, "Alemania vs Costa de Marfil": 20, "Ecuador vs Curazao": 20, "Túnez vs Japón": 20,
+    "España vs Arabia Saudita": 21, "Bélgica vs Irán": 21, "Uruguay vs Cabo Verde": 21, "Nueva Zelanda vs Egipto": 21,
+    "Argentina vs Austria": 22, "Francia vs Iraq": 22, "Noruega vs Senegal": 22, "Jordania vs Argelia": 22,
+    "Portugal vs Uzbekistán": 23, "Inglaterra vs Ghana": 23, "Panamá vs Croacia": 23, "RD del Congo vs Colombia": 23,
+    "Suiza vs Canadá": 24, "Bosnia y Herzegovina vs Qatar": 24, "Marruecos vs Haití": 24, "Escocia vs Brasil": 24,
+    "Sudáfrica vs Corea del Sur": 24, "República Checa vs México": 24,
+    "Curazao vs Costa de Marfil": 25, "Ecuador vs Alemania": 25, "Japón vs Suecia": 25, "Túnez vs Países Bajos": 25,
+    "Paraguay vs Australia": 25, "Turquía vs Estados Unidos": 25,
+    "Noruega vs Francia": 26, "Senegal vs Iraq": 26, "Cabo Verde vs Arabia Saudita": 26, "Uruguay vs España": 26,
+    "Egipto vs Irán": 26, "Nueva Zelanda vs Bélgica": 26,
+    "Croacia vs Ghana": 27, "Panamá vs Inglaterra": 27, "Colombia vs Portugal": 27, "RD del Congo vs Uzbekistán": 27,
+    "Argelia vs Austria": 27, "Jordania vs Argentina": 27
+  };
+
+
   // Estado global
 
   // CSV parser (maneja comillas)
@@ -1895,6 +1921,132 @@
   function escapeQuote(s) { return String(s).replace(/'/g, "\\'"); }
 
   // Abrir modal con la boleta
+  function calcularSeccionHoy(jugador, resMap, boletas) {
+    const hoy = new Date();
+    const diaHoy = hoy.getMonth() === 5 ? hoy.getDate() : -1; // solo junio
+
+    // Partidos de hoy sin resultado todavía
+    const partidosHoy = FIXTURE.filter(p => {
+      const fecha = FIXTURE_FECHAS[p];
+      if (fecha !== diaHoy) return false;
+      const res = resMap[normalizeCampo(p)];
+      return !res || !res.resultado;
+    });
+
+    if (partidosHoy.length === 0) return '';
+
+    // Para cada partido de hoy: pick de este jugador y distribución del grupo
+    const hdrMap = {};
+    if (boletas.length > 0) Object.keys(boletas[0]).forEach(h => hdrMap[normalizeCampo(h)] = h);
+
+    const infoPartidos = partidosHoy.map(partido => {
+      const hdr = hdrMap[normalizeCampo(partido)];
+      const miPick = hdr ? jugador.picks[hdr] : '?';
+      const [equipoA, equipoB] = partido.split(' vs ');
+      const conteo = { [equipoA]: 0, 'Empate': 0, [equipoB]: 0 };
+      boletas.forEach(b => {
+        const v = hdr ? b[hdr] : '';
+        if (conteo[v] !== undefined) conteo[v]++;
+      });
+      const total = boletas.length;
+      const pctMiPick = total > 0 ? Math.round((conteo[miPick] || 0) / total * 100) : 0;
+      const esUnico = (conteo[miPick] || 0) <= Math.round(total * 0.15); // <15% = contra la corriente
+      return { partido, miPick, conteo, pctMiPick, esUnico, equipoA, equipoB, total };
+    });
+
+    // Sección 1: Tu día de hoy
+    const uniqueCount = infoPartidos.filter(p => p.esUnico).length;
+    const consensoCount = infoPartidos.length - uniqueCount;
+
+    const rowsHoy = infoPartidos.map(p => {
+      const tag = p.esUnico
+        ? `<span style="background:rgba(251,191,36,0.2);color:#fbbf24;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:700;">DIFERENTE</span>`
+        : `<span style="background:rgba(96,165,250,0.15);color:#60a5fa;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;">CONSENSO</span>`;
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:6px;margin-bottom:4px;font-size:13px;">
+        <span style="color:#cbd5e1;">${escapeHtml(p.partido)}</span>
+        <span style="color:#fff;font-weight:600;">${escapeHtml(p.miPick)}${tag}<span style="color:#475569;font-size:11px;margin-left:6px;">${p.pctMiPick}%</span></span>
+      </div>`;
+    }).join('');
+
+    // Sección 2: Mejor escenario del día (fuerza bruta, max 8 partidos)
+    let mejorEscenario = null;
+    if (partidosHoy.length <= 8) {
+      const posActual = LB_STATE.ranking.findIndex(j => j.nombre === jugador.nombre) + 1;
+      const opciones = ['A', 'E', 'B']; // gana equipoA, empate, gana equipoB
+      const nPartidos = partidosHoy.length;
+      let mejorPos = posActual;
+      let mejorCombinacion = null;
+
+      // Iterar todas las combinaciones
+      const total = Math.pow(3, nPartidos);
+      for (let i = 0; i < total; i++) {
+        let temp = i;
+        const combinacion = [];
+        for (let j = 0; j < nPartidos; j++) {
+          combinacion.push(temp % 3);
+          temp = Math.floor(temp / 3);
+        }
+
+        // Calcular puntos para cada jugador en este escenario
+        const puntosExtra = {};
+        LB_STATE.ranking.forEach(j2 => { puntosExtra[j2.nombre] = 0; });
+
+        combinacion.forEach((opIdx, pIdx) => {
+          const partido = partidosHoy[pIdx];
+          const [eA, eB] = partido.split(' vs ');
+          const resultado = opIdx === 0 ? eA : opIdx === 1 ? 'Empate' : eB;
+          const hdr = hdrMap[normalizeCampo(partido)];
+          if (!hdr) return;
+          LB_STATE.boletas.forEach(b => {
+            if (b[hdr] === resultado) {
+              const j2 = LB_STATE.ranking.find(r => r.nombre === b['Nombre y Apellido']);
+              if (j2) puntosExtra[j2.nombre] = (puntosExtra[j2.nombre] || 0) + 1;
+            }
+          });
+        });
+
+        // Calcular nueva posición de este jugador
+        const newRanking = LB_STATE.ranking.map(j2 => ({
+          nombre: j2.nombre,
+          total: j2.total + (puntosExtra[j2.nombre] || 0)
+        })).sort((a, b) => b.total - a.total);
+
+        const newPos = newRanking.findIndex(j2 => j2.nombre === jugador.nombre) + 1;
+        if (newPos < mejorPos) {
+          mejorPos = newPos;
+          mejorCombinacion = combinacion.map((opIdx, pIdx) => {
+            const partido = partidosHoy[pIdx];
+            const [eA, eB] = partido.split(' vs ');
+            return { partido, resultado: opIdx === 0 ? eA : opIdx === 1 ? 'Empate' : eB };
+          });
+        }
+      }
+
+      if (mejorCombinacion && mejorPos < posActual) {
+        mejorEscenario = { posActual, mejorPos, combinacion: mejorCombinacion };
+      }
+    }
+
+    const escenarioHTML = mejorEscenario ? `
+      <div style="margin-top:8px;">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">Si se dan estos resultados, pasás del <strong style="color:#fff">puesto ${mejorEscenario.posActual}</strong> al <strong style="color:#22c55e;font-size:16px;">puesto ${mejorEscenario.mejorPos}</strong> 🚀</div>
+        ${mejorEscenario.combinacion.map(c => `
+          <div style="display:flex;justify-content:space-between;padding:6px 12px;background:rgba(34,197,94,0.08);border-left:3px solid #22c55e;border-radius:4px;margin-bottom:3px;font-size:12px;">
+            <span style="color:#94a3b8;">${escapeHtml(c.partido)}</span>
+            <span style="color:#22c55e;font-weight:700;">${escapeHtml(c.resultado)}</span>
+          </div>`).join('')}
+      </div>` : `<div style="font-size:12px;color:#64748b;margin-top:8px;">Ya estás en tu mejor posición posible hoy 💪</div>`;
+
+    return `
+      <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:16px;margin:16px 0;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:#60a5fa;margin-bottom:12px;">⚽ Tu día de hoy · ${partidosHoy.length} partidos</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">${consensoCount} con el consenso · ${uniqueCount} diferente${uniqueCount !== 1 ? 's' : ''}</div>
+        ${rowsHoy}
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:#60a5fa;margin:16px 0 8px;">🎯 Mejor escenario del día</div>
+        ${escenarioHTML}
+      </div>`;
+  }
+
   window.abrirBoleta = function(nombre) {
     const jugador = LB_STATE.ranking.find(j => j.nombre === nombre);
     if (!jugador) return;
@@ -1963,6 +2115,7 @@
         <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extras}</div><div class="lb-modal-bd-label">Extras</div></div>
         <div class="lb-modal-bd"><div class="lb-modal-bd-num">${jugador.extrasPlus}</div><div class="lb-modal-bd-label">PLUS</div></div>
       </div>
+      ${calcularSeccionHoy(jugador, resMap, LB_STATE.boletas)}
       ${pickExtras.length > 0 ? `<h4 style="color:#60a5fa;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin:16px 0 8px;">Extras (${pickExtras.length})</h4><div class="lb-modal-picks">${pickExtras.map(renderPick).join('')}</div>` : ''}
       <h4 style="color:#60a5fa;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin:24px 0 8px;">Partidos (${pickPartidos.length})</h4>
       <div class="lb-modal-picks">${pickPartidos.map(renderPick).join('')}</div>
