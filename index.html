@@ -782,6 +782,7 @@
     padding: 14px;
     text-align: center;
     transition: all 0.2s;
+    cursor: pointer;
   }
   .lb-scenario:hover {
     border-color: rgba(96, 165, 250, 0.4);
@@ -1862,24 +1863,28 @@
           <span class="lb-next-badge">Qué pasa si...</span>
         </div>
         <div class="lb-scenarios">
-          <div class="lb-scenario">
+          <div class="lb-scenario" onclick="mostrarPicksEscenario('${escapeQuote(prox.partido)}','${escapeQuote(prox.equipoA)}')" style="cursor:pointer;">
             <div class="lb-scenario-label">Si gana</div>
             <div class="lb-scenario-team">${escapeHtml(prox.equipoA)}</div>
             <div class="lb-scenario-count">${prox.conteo[prox.equipoA]}</div>
             <div class="lb-scenario-suffix">de ${total} aciertan</div>
           </div>
-          <div class="lb-scenario">
+          <div class="lb-scenario" onclick="mostrarPicksEscenario('${escapeQuote(prox.partido)}','Empate')" style="cursor:pointer;">
             <div class="lb-scenario-label">Si</div>
             <div class="lb-scenario-team">EMPATAN</div>
             <div class="lb-scenario-count">${prox.conteo['Empate']}</div>
             <div class="lb-scenario-suffix">de ${total} aciertan</div>
           </div>
-          <div class="lb-scenario">
+          <div class="lb-scenario" onclick="mostrarPicksEscenario('${escapeQuote(prox.partido)}','${escapeQuote(prox.equipoB)}')" style="cursor:pointer;">
             <div class="lb-scenario-label">Si gana</div>
             <div class="lb-scenario-team">${escapeHtml(prox.equipoB)}</div>
             <div class="lb-scenario-count">${prox.conteo[prox.equipoB]}</div>
             <div class="lb-scenario-suffix">de ${total} aciertan</div>
           </div>
+        </div>
+        <div id="escenario-nombres" style="display:none; margin-top:16px; padding:14px 16px; background:rgba(0,0,0,0.3); border-radius:10px; border:1px solid rgba(96,165,250,0.2);">
+          <div id="escenario-nombres-titulo" style="font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:1px; color:#60a5fa; margin-bottom:10px;"></div>
+          <div id="escenario-nombres-lista" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
         </div>
       `;
     } else {
@@ -2102,6 +2107,33 @@
     `;
     document.getElementById('lb-modal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+  };
+
+  window.mostrarPicksEscenario = function(partido, resultado) {
+    const headerMap = {};
+    if (LB_STATE.boletas.length > 0) {
+      Object.keys(LB_STATE.boletas[0]).forEach(h => headerMap[normalizeCampo(h)] = h);
+    }
+    const hdr = headerMap[normalizeCampo(partido)];
+    if (!hdr) return;
+
+    const nombres = LB_STATE.boletas
+      .filter(b => b[hdr] === resultado)
+      .map(b => b['Nombre y Apellido'])
+      .filter(Boolean)
+      .sort();
+
+    const tituloEl = document.getElementById('escenario-nombres-titulo');
+    const listaEl = document.getElementById('escenario-nombres-lista');
+    const contenedor = document.getElementById('escenario-nombres');
+    if (!tituloEl || !listaEl || !contenedor) return;
+
+    const label = resultado === 'Empate' ? 'Empatan' : `Gana ${resultado}`;
+    tituloEl.textContent = `${label} → ${nombres.length} jugadores aciertan:`;
+    listaEl.innerHTML = nombres.map(n =>
+      `<span style="background:rgba(37,99,235,0.2);border:1px solid rgba(96,165,250,0.3);border-radius:6px;padding:4px 10px;font-size:12px;color:#e2e8f0;cursor:pointer;" onclick="abrirBoleta('${escapeQuote(n)}')">${escapeHtml(n)}</span>`
+    ).join('');
+    contenedor.style.display = 'block';
   };
 
   window.closeBoletaModal = function() {
