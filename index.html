@@ -1612,6 +1612,9 @@
     "Jordania vs Argentina"          // 27 jun - Dallas
   ];
 
+  // Horarios de cada partido en hora argentina
+  const FIXTURE_HORARIOS = {"México vs Sudáfrica": {"dia": 11, "hora": "16:00", "utc": "2026-06-11T19:00:00Z"}, "Corea del Sur vs República Checa": {"dia": 11, "hora": "23:00", "utc": "2026-06-12T02:00:00Z"}, "Canadá vs Bosnia y Herzegovina": {"dia": 12, "hora": "16:00", "utc": "2026-06-12T19:00:00Z"}, "Estados Unidos vs Paraguay": {"dia": 12, "hora": "22:00", "utc": "2026-06-13T01:00:00Z"}, "Qatar vs Suiza": {"dia": 13, "hora": "16:00", "utc": "2026-06-13T19:00:00Z"}, "Brasil vs Marruecos": {"dia": 13, "hora": "19:00", "utc": "2026-06-13T22:00:00Z"}, "Haití vs Escocia": {"dia": 13, "hora": "22:00", "utc": "2026-06-14T01:00:00Z"}, "Australia vs Turquía": {"dia": 14, "hora": "01:00", "utc": "2026-06-14T04:00:00Z"}, "Alemania vs Curazao": {"dia": 14, "hora": "14:00", "utc": "2026-06-14T17:00:00Z"}, "Países Bajos vs Japón": {"dia": 14, "hora": "17:00", "utc": "2026-06-14T20:00:00Z"}, "Costa de Marfil vs Ecuador": {"dia": 14, "hora": "20:00", "utc": "2026-06-14T23:00:00Z"}, "Suecia vs Túnez": {"dia": 14, "hora": "23:00", "utc": "2026-06-15T02:00:00Z"}, "España vs Cabo Verde": {"dia": 15, "hora": "13:00", "utc": "2026-06-15T16:00:00Z"}, "Bélgica vs Egipto": {"dia": 15, "hora": "16:00", "utc": "2026-06-15T19:00:00Z"}, "Arabia Saudita vs Uruguay": {"dia": 15, "hora": "19:00", "utc": "2026-06-15T22:00:00Z"}, "Irán vs Nueva Zelanda": {"dia": 15, "hora": "22:00", "utc": "2026-06-16T01:00:00Z"}, "Francia vs Senegal": {"dia": 16, "hora": "16:00", "utc": "2026-06-16T19:00:00Z"}, "Iraq vs Noruega": {"dia": 16, "hora": "19:00", "utc": "2026-06-16T22:00:00Z"}, "Argentina vs Argelia": {"dia": 16, "hora": "22:00", "utc": "2026-06-17T01:00:00Z"}, "Austria vs Jordania": {"dia": 17, "hora": "01:00", "utc": "2026-06-17T04:00:00Z"}, "Portugal vs RD del Congo": {"dia": 17, "hora": "14:00", "utc": "2026-06-17T17:00:00Z"}, "Inglaterra vs Croacia": {"dia": 17, "hora": "17:00", "utc": "2026-06-17T20:00:00Z"}, "Ghana vs Panamá": {"dia": 17, "hora": "20:00", "utc": "2026-06-17T23:00:00Z"}, "Uzbekistán vs Colombia": {"dia": 17, "hora": "23:00", "utc": "2026-06-18T02:00:00Z"}, "República Checa vs Sudáfrica": {"dia": 18, "hora": "13:00", "utc": "2026-06-18T16:00:00Z"}, "Suiza vs Bosnia y Herzegovina": {"dia": 18, "hora": "16:00", "utc": "2026-06-18T19:00:00Z"}, "Canadá vs Qatar": {"dia": 18, "hora": "19:00", "utc": "2026-06-18T22:00:00Z"}, "México vs Corea del Sur": {"dia": 18, "hora": "22:00", "utc": "2026-06-19T01:00:00Z"}, "Estados Unidos vs Australia": {"dia": 19, "hora": "16:00", "utc": "2026-06-19T19:00:00Z"}, "Escocia vs Marruecos": {"dia": 19, "hora": "19:00", "utc": "2026-06-19T22:00:00Z"}, "Brasil vs Haití": {"dia": 19, "hora": "21:30", "utc": "2026-06-20T00:30:00Z"}, "Turquía vs Paraguay": {"dia": 20, "hora": "00:00", "utc": "2026-06-20T03:00:00Z"}, "Países Bajos vs Suecia": {"dia": 20, "hora": "14:00", "utc": "2026-06-20T17:00:00Z"}, "Alemania vs Costa de Marfil": {"dia": 20, "hora": "17:00", "utc": "2026-06-20T20:00:00Z"}, "Ecuador vs Curazao": {"dia": 20, "hora": "21:00", "utc": "2026-06-21T00:00:00Z"}, "Túnez vs Japón": {"dia": 21, "hora": "01:00", "utc": "2026-06-21T04:00:00Z"}, "España vs Arabia Saudita": {"dia": 21, "hora": "13:00", "utc": "2026-06-21T16:00:00Z"}, "Bélgica vs Irán": {"dia": 21, "hora": "16:00", "utc": "2026-06-21T19:00:00Z"}, "Uruguay vs Cabo Verde": {"dia": 21, "hora": "19:00", "utc": "2026-06-21T22:00:00Z"}, "Nueva Zelanda vs Egipto": {"dia": 21, "hora": "22:00", "utc": "2026-06-22T01:00:00Z"}, "Argentina vs Austria": {"dia": 22, "hora": "14:00", "utc": "2026-06-22T17:00:00Z"}, "Francia vs Iraq": {"dia": 22, "hora": "18:00", "utc": "2026-06-22T21:00:00Z"}, "Noruega vs Senegal": {"dia": 22, "hora": "21:00", "utc": "2026-06-22T00:00:00Z"}, "Jordania vs Argelia": {"dia": 23, "hora": "00:00", "utc": "2026-06-23T03:00:00Z"}, "Portugal vs Uzbekistán": {"dia": 23, "hora": "14:00", "utc": "2026-06-23T17:00:00Z"}, "Inglaterra vs Ghana": {"dia": 23, "hora": "17:00", "utc": "2026-06-23T20:00:00Z"}, "Panamá vs Croacia": {"dia": 23, "hora": "20:00", "utc": "2026-06-23T23:00:00Z"}, "RD del Congo vs Colombia": {"dia": 23, "hora": "23:00", "utc": "2026-06-24T02:00:00Z"}, "Suiza vs Canadá": {"dia": 24, "hora": "16:00", "utc": "2026-06-24T19:00:00Z"}, "Bosnia y Herzegovina vs Qatar": {"dia": 24, "hora": "16:00", "utc": "2026-06-24T19:00:00Z"}, "Marruecos vs Haití": {"dia": 24, "hora": "22:00", "utc": "2026-06-25T01:00:00Z"}, "Escocia vs Brasil": {"dia": 24, "hora": "22:00", "utc": "2026-06-25T01:00:00Z"}, "Sudáfrica vs Corea del Sur": {"dia": 24, "hora": "19:00", "utc": "2026-06-24T22:00:00Z"}, "República Checa vs México": {"dia": 24, "hora": "19:00", "utc": "2026-06-24T22:00:00Z"}, "Curazao vs Costa de Marfil": {"dia": 25, "hora": "16:00", "utc": "2026-06-25T19:00:00Z"}, "Ecuador vs Alemania": {"dia": 25, "hora": "16:00", "utc": "2026-06-25T19:00:00Z"}, "Japón vs Suecia": {"dia": 25, "hora": "22:00", "utc": "2026-06-26T01:00:00Z"}, "Túnez vs Países Bajos": {"dia": 25, "hora": "22:00", "utc": "2026-06-26T01:00:00Z"}, "Paraguay vs Australia": {"dia": 25, "hora": "19:00", "utc": "2026-06-25T22:00:00Z"}, "Turquía vs Estados Unidos": {"dia": 25, "hora": "19:00", "utc": "2026-06-25T22:00:00Z"}, "Noruega vs Francia": {"dia": 26, "hora": "16:00", "utc": "2026-06-26T19:00:00Z"}, "Senegal vs Iraq": {"dia": 26, "hora": "16:00", "utc": "2026-06-26T19:00:00Z"}, "Cabo Verde vs Arabia Saudita": {"dia": 26, "hora": "22:00", "utc": "2026-06-27T01:00:00Z"}, "Uruguay vs España": {"dia": 26, "hora": "22:00", "utc": "2026-06-27T01:00:00Z"}, "Egipto vs Irán": {"dia": 26, "hora": "19:00", "utc": "2026-06-26T22:00:00Z"}, "Nueva Zelanda vs Bélgica": {"dia": 26, "hora": "19:00", "utc": "2026-06-26T22:00:00Z"}, "Croacia vs Ghana": {"dia": 27, "hora": "16:00", "utc": "2026-06-27T19:00:00Z"}, "Panamá vs Inglaterra": {"dia": 27, "hora": "16:00", "utc": "2026-06-27T19:00:00Z"}, "Colombia vs Portugal": {"dia": 27, "hora": "22:00", "utc": "2026-06-28T01:00:00Z"}, "RD del Congo vs Uzbekistán": {"dia": 27, "hora": "22:00", "utc": "2026-06-28T01:00:00Z"}, "Argelia vs Austria": {"dia": 27, "hora": "19:00", "utc": "2026-06-27T22:00:00Z"}, "Jordania vs Argentina": {"dia": 27, "hora": "23:00", "utc": "2026-06-28T02:00:00Z"}};
+
   // Mapa partido → fecha (día del mes de junio 2026)
   const FIXTURE_FECHAS = {
     "México vs Sudáfrica": 11, "Corea del Sur vs República Checa": 11,
@@ -1962,8 +1965,10 @@
       const tag = p.esUnico
         ? `<span style="background:rgba(251,191,36,0.2);color:#fbbf24;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:700;">DIFERENTE</span>`
         : `<span style="background:rgba(96,165,250,0.15);color:#60a5fa;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;">CONSENSO</span>`;
+      const horDataHoy = FIXTURE_HORARIOS[p.partido];
+      const horaHoy = horDataHoy ? `<span style="color:#60a5fa;font-size:11px;margin-right:6px;">${horDataHoy.hora}hs</span>` : '';
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:6px;margin-bottom:4px;font-size:13px;">
-        <span style="color:#cbd5e1;">${escapeHtml(p.partido)}</span>
+        <span style="color:#cbd5e1;">${horaHoy}${escapeHtml(p.partido)}</span>
         <span style="color:#fff;font-weight:600;">${escapeHtml(p.miPick)}${tag}<span style="color:#475569;font-size:11px;margin-left:6px;">${p.pctMiPick}%</span></span>
       </div>`;
     }).join('');
@@ -2055,12 +2060,22 @@
       return { campo: h, pick, estado };
     };
 
+    const ahora = Date.now();
     const renderPick = p => {
       const esProximo = proximoNorm && normalizeCampo(p.campo) === proximoNorm;
       const extraStyle = esProximo ? 'border:2px solid #fbbf24; background:rgba(251,191,36,0.08);' : '';
       const badge = esProximo ? '<span style="background:#fbbf24;color:#000;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:8px;letter-spacing:1px;">PRÓXIMO</span>' : '';
+      // Horario
+      const horData = FIXTURE_HORARIOS[p.campo];
+      let horaTag = '';
+      if (horData) {
+        const jugado = new Date(horData.utc).getTime() + 2*60*60*1000 < ahora; // +2h para dar tiempo al partido
+        if (!jugado) {
+          horaTag = `<span style="color:#60a5fa;font-size:11px;margin-left:8px;font-weight:600;">${horData.hora}hs</span>`;
+        }
+      }
       return `<div class="lb-pick ${p.estado}" style="${extraStyle}">
-        <span class="lb-pick-name">${escapeHtml(p.campo)}${badge}</span>
+        <span class="lb-pick-name">${escapeHtml(p.campo)}${badge}${horaTag}</span>
         <span class="lb-pick-value">${escapeHtml(p.pick)}</span>
       </div>`;
     };
