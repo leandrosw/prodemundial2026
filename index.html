@@ -1677,14 +1677,12 @@
 
   // Normalizar nombre para matchear sheet ↔ boletas
   function normalizeCampo(s) {
-    let str = String(s || '')
+    return String(s || '')
       .replace(/[\r\n]+/g, ' ')
       .replace(/\s+/g, ' ')
-      .trim();
-    // Cortar desde el primer "- (Extra ... pts)" o "(Extra ... pts)" en adelante,
-    // sin importar qué texto venga después (paréntesis con aclaraciones, etc.)
-    str = str.replace(/\s*-?\s*\(extra\s+\d+\s*(plus\s+)?pts?\)[\s\S]*$/i, '');
-    return str
+      .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
+      .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
+      .replace(/\s+- $/, '')
       .replace(/[""]/g, '"')
       .trim()
       .toLowerCase();
@@ -1730,7 +1728,7 @@
         }
 
         jugados++;
-        const acierto = pick === resultado;
+        const acierto = normalizeValor(pick) === normalizeValor(resultado);
         if (acierto) {
           acertados++;
           total += peso;
