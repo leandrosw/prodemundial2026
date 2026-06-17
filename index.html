@@ -1677,28 +1677,17 @@
 
   // Normalizar nombre para matchear sheet ↔ boletas
   function normalizeCampo(s) {
-    return String(s || '')
+    let str = String(s || '')
       .replace(/[\r\n]+/g, ' ')
       .replace(/\s+/g, ' ')
-      .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
-      .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
-      .replace(/\s+- $/, '')
+      .trim();
+    // Cortar desde el primer "- (Extra ... pts)" o "(Extra ... pts)" en adelante,
+    // sin importar qué texto venga después (paréntesis con aclaraciones, etc.)
+    str = str.replace(/\s*-?\s*\(extra\s+\d+\s*(plus\s+)?pts?\)[\s\S]*$/i, '');
+    return str
       .replace(/[""]/g, '"')
       .trim()
       .toLowerCase();
-  }
-
-  // Normaliza valores de pick/resultado para comparación robusta
-  // Soluciona: "8" vs "8.0", espacios extra, "10 o más" vs "10 O MAS", etc.
-  function normalizeValor(v) {
-    let s = String(v == null ? '' : v).trim();
-    // Si es un número con .0 al final (Sheets a veces exporta así), lo limpiamos
-    if (/^-?\d+\.0+$/.test(s)) {
-      s = s.replace(/\.0+$/, '');
-    }
-    // Normalizar espacios múltiples y mayúsculas/acentos no, solo espacios
-    s = s.replace(/\s+/g, ' ');
-    return s;
   }
 
   // Peso según el tipo declarado en el sheet de resultados
@@ -1741,7 +1730,7 @@
         }
 
         jugados++;
-        const acierto = normalizeValor(pick) === normalizeValor(resultado);
+        const acierto = pick === resultado;
         if (acierto) {
           acertados++;
           total += peso;
@@ -2073,7 +2062,7 @@
       const res = resMap[normalizeCampo(h)];
       let estado = 'pending';
       if (res && res.resultado) {
-        estado = normalizeValor(pick) === normalizeValor(res.resultado) ? 'correct' : 'wrong';
+        estado = pick === res.resultado ? 'correct' : 'wrong';
       }
       return { campo: h, pick, estado };
     };
