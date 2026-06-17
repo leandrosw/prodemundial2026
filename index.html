@@ -1688,6 +1688,19 @@
       .toLowerCase();
   }
 
+  // Normaliza valores de pick/resultado para comparación robusta
+  // Soluciona: "8" vs "8.0", espacios extra, "10 o más" vs "10 O MAS", etc.
+  function normalizeValor(v) {
+    let s = String(v == null ? '' : v).trim();
+    // Si es un número con .0 al final (Sheets a veces exporta así), lo limpiamos
+    if (/^-?\d+\.0+$/.test(s)) {
+      s = s.replace(/\.0+$/, '');
+    }
+    // Normalizar espacios múltiples y mayúsculas/acentos no, solo espacios
+    s = s.replace(/\s+/g, ' ');
+    return s;
+  }
+
   // Peso según el tipo declarado en el sheet de resultados
   function getPesoFromTipo(tipo) {
     const t = String(tipo || '').toLowerCase().trim();
@@ -1728,7 +1741,7 @@
         }
 
         jugados++;
-        const acierto = pick === resultado;
+        const acierto = normalizeValor(pick) === normalizeValor(resultado);
         if (acierto) {
           acertados++;
           total += peso;
@@ -2060,7 +2073,7 @@
       const res = resMap[normalizeCampo(h)];
       let estado = 'pending';
       if (res && res.resultado) {
-        estado = pick === res.resultado ? 'correct' : 'wrong';
+        estado = normalizeValor(pick) === normalizeValor(res.resultado) ? 'correct' : 'wrong';
       }
       return { campo: h, pick, estado };
     };
