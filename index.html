@@ -1678,12 +1678,19 @@
   // Normalizar nombre para matchear sheet ↔ boletas
   function normalizeCampo(s) {
     return String(s || '')
+      // unifica formas de acentos (NFD/NFC) y elimina BOM invisible que a veces
+      // viene pegado al primer header cuando el CSV se exporta desde Google Sheets
+      .normalize('NFC')
+      .replace(/^\uFEFF/, '')
       .replace(/[\r\n]+/g, ' ')
       .replace(/\s+/g, ' ')
       .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
       .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
       .replace(/\s+- $/, '')
       .replace(/[""]/g, '"')
+      // unifica "vs." / "Vs" / "VS." con "vs" para que no rompa el match de partidos
+      .replace(/\bvs\.?\b/gi, 'vs')
+      .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
   }
@@ -2212,6 +2219,19 @@
       LB_STATE.headersBoleta = headersBoleta;
       LB_STATE.resultados = resultados;
       LB_STATE.ranking = calcularRanking(boletas, resultados, headersBoleta);
+
+      // DEBUG: detectar resultados con valor cargado que no encontraron columna
+      // correspondiente en boletas.csv (problema típico: texto que no matchea
+      // por tildes, "vs." vs "vs", espacios raros, etc.)
+      try {
+        const headerMapDebug = {};
+        for (const h of headersBoleta) headerMapDebug[normalizeCampo(h)] = h;
+        const sinMatch = resultados.filter(r => r.resultado && r.resultado !== '' && !headerMapDebug[r.normKey]);
+        if (sinMatch.length > 0) {
+          console.warn('[Prode] Resultados cargados que NO matchean ninguna columna de boletas.csv:',
+            sinMatch.map(r => ({ nombre: r.nombre, normKey: r.normKey, tipo: r.tipo })));
+        }
+      } catch (e) {}
 
       // Persistir lastRanking entre refreshes de página
       try {
