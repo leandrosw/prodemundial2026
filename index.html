@@ -1442,7 +1442,7 @@
 </a>
 
 <script>
-  console.log('%c[Prode] index.html build 2026-06-18-fix2 cargado', 'color:#22c55e;font-weight:bold');
+  console.log('%c[Prode] index.html build 2026-06-18-fix3 cargado', 'color:#22c55e;font-weight:bold');
   // ===== COUNTDOWN AL MUNDIAL =====
   let LB_STATE = {
     boletas: null,
@@ -1678,13 +1678,22 @@
 
   // Normalizar nombre para matchear sheet ↔ boletas
   function normalizeCampo(s) {
-    return String(s || '')
+    let str = String(s || '')
       // unifica formas de acentos (NFD/NFC) y elimina BOM invisible que a veces
       // viene pegado al primer header cuando el CSV se exporta desde Google Sheets
       .normalize('NFC')
       .replace(/^\uFEFF/, '')
       .replace(/[\r\n]+/g, ' ')
       .replace(/\s+/g, ' ')
+      .trim();
+
+    // Si es una pregunta, todo lo que venga DESPUÉS del primer "?" es decoración
+    // (nota aclaratoria, "- (Extra 2 pts)", ejemplos, etc.) sin importar el orden
+    // en que estén puestas. Cortamos ahí para quedarnos solo con la pregunta real.
+    const qIdx = str.indexOf('?');
+    if (qIdx !== -1) str = str.slice(0, qIdx + 1);
+
+    return str
       .replace(/\s*-\s*\(extra\s+\d+\s*(plus\s+)?pts?\)\s*$/i, '')
       .replace(/\s*\(extra\s+\d+\s*pts?\)\s*$/i, '')
       .replace(/\s+- $/, '')
