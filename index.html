@@ -1712,6 +1712,16 @@
     return s.replace(/\s+/g, ' ');
   }
 
+  // Compara pick con resultado. Si el resultado tiene "|" separa múltiples respuestas válidas.
+  // Ej: resultado = "Messi|Mbappe" → ambos ganan puntos.
+  function hayAcierto(pick, resultado) {
+    if (!resultado) return false;
+    const pickN = normalizeValor(pick).toLowerCase();
+    if (!pickN) return false;
+    const opciones = String(resultado).split('|').map(o => normalizeValor(o).toLowerCase()).filter(Boolean);
+    return opciones.includes(pickN);
+  }
+
   // Peso según el tipo declarado en el sheet de resultados
   function getPesoFromTipo(tipo) {
     const t = String(tipo || '').toLowerCase().trim();
@@ -1752,7 +1762,7 @@
         }
 
         jugados++;
-        const acierto = normalizeValor(pick) === normalizeValor(resultado);
+        const acierto = hayAcierto(pick, resultado);
         if (acierto) {
           acertados++;
           total += peso;
@@ -2084,7 +2094,7 @@
       const res = resMap[normalizeCampo(h)];
       let estado = 'pending';
       if (res && res.resultado) {
-        estado = pick === res.resultado ? 'correct' : 'wrong';
+        estado = hayAcierto(pick, res.resultado) ? 'correct' : 'wrong';
       }
       return { campo: h, pick, estado };
     };
